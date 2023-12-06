@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/dist/css/bootstrap.css}">
+</head>
+<body>
+<div class="container mt-3">
+    <div class="card">
+        <div class="card-header bg-dark text-white">
+            <h5 class="card-title">Notes</h5>
+        </div>
+        <div class="card-body">
+            <a href="/contact/list" class="btn btn-outline-primary">Contacts</a>
+            <a href="/address/list" class="btn btn-outline-info">Addresses</a>
+        </div>
+    </div>
+    <script th:src="@{webjars/bootstrap/5.3.2/dist/js/bootstrap.bundle.js}"></script>
+</div>
+</body>
+</html>
