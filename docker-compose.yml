@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: notebook-mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: P@ssw0rd
+      MYSQL_DATABASE: notebook-db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: P@ssw0rd
+    ports:
+      - "3306:3306"
+    volumes:
+      - notebook-mysql-data:/var/lib/mysql
+    networks:
+      - notebook-mysql-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin-container
+    environment:
+      PMA_HOST: notebook-mysql-container
+      PMA_PORT: 3306
+    ports:
+      - "8090:80"
+    depends_on:
+      - mysql
+    networks:
+      - notebook-mysql-network
+
+
+volumes:
+  notebook-mysql-data:
+
+networks:
+  notebook-mysql-network:
