@@ -3,24 +3,75 @@ package home.project.notes.controllers;
 import home.project.notes.data.Address;
 import home.project.notes.service.AddressService;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Optional;
 
-@RestController
+@Controller
 @AllArgsConstructor
 @RequestMapping("/address")
 public class AddressController {
 
+    private static final String NOT_IMPLEMENTED_YET = "notimplementedyet";
+    private static final String VIEW_FOLDER = "address";
+    private static final String REDIRECT = "redirect:/";
+
     private final AddressService addressService;
 
     @GetMapping("/list")
-    public List<Address> getAddresses() {
-        return addressService.getAddresses();
+    public String getAddresses(Model model) {
+        model.addAttribute("addresses", addressService.getAddresses());
+        return VIEW_FOLDER + "/list";
+    }
+
+    @GetMapping("/add")
+    public String getAddressForm(Model model) {
+        return VIEW_FOLDER + "/create";
     }
 
     @PostMapping("/add")
-    public Address addAddress(@RequestBody Address address) {
-        return addressService.saveAddress(address);
+    public String addAddress(@ModelAttribute Address address) {
+        Address savedAddress = addressService.saveAddress(address);
+        return REDIRECT + VIEW_FOLDER + "/" + savedAddress.getId();
+    }
+
+    @GetMapping("/{id}")
+    public String getAddress(@PathVariable int id, Model model) {
+        return addressService.getAddressById(id)
+                .map(address -> {
+                    model.addAttribute("address", address);
+                    return VIEW_FOLDER + "/details";
+                })
+                .orElse(NOT_IMPLEMENTED_YET);
+    }
+
+
+    @GetMapping("/{id}/edit")
+    public String getUpdateAddress(@PathVariable int id, Model model) {
+        return addressService.getAddressById(id)
+                .map(address -> {
+                    model.addAttribute("address", address);
+                    return VIEW_FOLDER + "/edit";
+                })
+                .orElse(NOT_IMPLEMENTED_YET);
+    }
+
+    @PostMapping("/{id}/edit")
+    public String updateAddress(@PathVariable int id, @ModelAttribute Address address, Model model) {
+        Optional<Address> optionalAddress = addressService.updateAddress(id, address);
+        if (optionalAddress.isPresent()) {
+            model.addAttribute("address", optionalAddress.get());
+            return REDIRECT + VIEW_FOLDER + "/{id}";
+        } else {
+            return NOT_IMPLEMENTED_YET;
+        }
+    }
+
+    @GetMapping("/{id}/delete")
+    public String deleteAddress(@PathVariable int id) {
+        addressService.deleteAddress(id);
+        return REDIRECT + VIEW_FOLDER + "/list";
     }
 }
