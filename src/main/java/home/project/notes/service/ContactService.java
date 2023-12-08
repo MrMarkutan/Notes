@@ -2,22 +2,18 @@ package home.project.notes.service;
 
 import home.project.notes.data.Address;
 import home.project.notes.data.Contact;
-import home.project.notes.data.PhoneNumber;
 import home.project.notes.repos.ContactRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 @AllArgsConstructor
 public class ContactService {
     private final ContactRepository contactRepository;
     private final AddressService addressService;
-    private final PhoneNumberService phoneNumberService;
 
     public List<Contact> getContacts() {
         return contactRepository.findAll();
@@ -38,12 +34,14 @@ public class ContactService {
 
     public Optional<Contact> updateContact(int id, Contact newContact) {
         return findContactById(id)
-                .map(existingContact -> existingContact.update(newContact))
+                .map(existingContact -> {
+                    existingContact.update(newContact);
+                    return existingContact;
+                })
                 .map(this::saveContact);
     }
 
     private void checkContact(Contact contact) {
-        checkPhoneNumbers(contact);
         checkHomeAddress(contact);
     }
 
@@ -54,25 +52,4 @@ public class ContactService {
             contact.setHomeAddress(savedAddress);
         }
     }
-
-    private void checkPhoneNumbers(Contact contact) {
-        Set<PhoneNumber> savedNumbers = new LinkedHashSet<>();
-        for (PhoneNumber phoneNumber : contact.getPhoneNumbers()) {
-            if (phoneNumber != null) {
-                savedNumbers.add(phoneNumberService.savePhoneNumber(phoneNumber));
-            }
-        }
-        contact.setPhoneNumbers(savedNumbers);
-    }
-
-    public void deleteNumberFromContact(int id, int nId) {
-        phoneNumberService.getPhoneNumberById(nId)
-                .ifPresent(phoneNumber -> findContactById(id)
-                        .ifPresent(contact -> {
-                            contact.getPhoneNumbers().remove(phoneNumber);
-                            phoneNumberService.deletePhoneNumber(nId);
-                            updateContact(id, contact);
-                        }));
-    }
-
 }

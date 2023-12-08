@@ -1,6 +1,7 @@
 package home.project.notes.data;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import home.project.notes.utils.Builders;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,8 +32,8 @@ public class Contact {
     @ManyToOne
     private Address homeAddress;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private Set<PhoneNumber> phoneNumbers = new LinkedHashSet<>();
+    @Column(name = "phone_number", length = 100)
+    private String phoneNumber;
 
     @Column(name = "birth_date")
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -46,8 +47,8 @@ public class Contact {
         if (from.getFirstName() != null) this.setFirstName(from.getFirstName());
         if (from.getLastName() != null) this.setLastName(from.getLastName());
         if (from.getHomeAddress() != null) this.setHomeAddress(from.getHomeAddress());
-        if (from.getPhoneNumbers() != null && !from.getPhoneNumbers().isEmpty())
-            this.setPhoneNumbers(from.getPhoneNumbers());
+        if (from.getPhoneNumber() != null && !from.getPhoneNumber().isEmpty())
+            this.setPhoneNumber(from.getPhoneNumber());
         if (from.getBirthDate() != null) this.setBirthDate(from.getBirthDate());
         lastUpdate = LocalDateTime.now();
         return this;
@@ -55,9 +56,5 @@ public class Contact {
 
     public String getFullName() {
         return firstName + " " + lastName;
-    }
-
-    public void addPhoneNumber(PhoneNumber phoneNumber) {
-        this.phoneNumbers.add(phoneNumber);
     }
 }

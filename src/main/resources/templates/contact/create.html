@@ -7,7 +7,7 @@
     <link rel="stylesheet" th:href="@{/webjars/bootstrap-icons/1.11.1/font/bootstrap-icons.css}">
 </head>
 <body>
-<form method="post" action="add" class="container mt-5">
+<form method="post" action="add" class="container mt-5" th:object="${contact}">
     <div class="container">
         <div class="row d-flex">
             <div class="col-md-4">
@@ -37,7 +37,9 @@
             <div class="col-md-8">
                 <div class="mb-3">
                     <select class="form-select" id="homeAddress" name="homeAddress">
-                        <option th:each="address : ${addresses}" th:value="${address.id}"
+                        <option value="" th:text="'Select an address'"></option>
+                        <option th:if="${addresses != null}"
+                                th:each="address : ${addresses}" th:value="${address.id}"
                                 th:text="${address.toString()}"></option>
                     </select>
                 </div>

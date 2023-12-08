@@ -1,11 +1,9 @@
 package home.project.notes.utils;
 
-import home.project.notes.data.PhoneNumber;
+import home.project.notes.data.Contact;
 
 public class Builders {
-    public static PhoneNumber buildPhoneNumber(String phoneNumber) {
-        return PhoneNumber.builder()
-                .number(phoneNumber)
-                .build();
+    public static Contact buildContact() {
+        return Contact.builder().build();
     }
 }

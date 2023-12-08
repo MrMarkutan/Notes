@@ -10,19 +10,18 @@
 <div class="container mt-5">
     <table class="table table-hover table-striped table-bordered table-sm">
         <thead class="table-dark">
-        <tr>
+        <tr class="text-center">
             <th>ID</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Home Address</th>
-            <th>Phone Numbers</th>
+            <th>Phone Number</th>
             <th>Birth Date</th>
-            <th></th>
-            <th></th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
+        <tr class="text-center">
             <td th:text="${contact.id}"></td>
             <td th:text="${contact.firstName}"></td>
             <td th:text="${contact.lastName}"></td>
@@ -34,10 +33,8 @@
                 <span>No home address available.</span>
             </td>
             <td>
-                <ul th:if="${not #lists.isEmpty(contact.phoneNumbers)}">
-                    <li th:each="phoneNumber : ${contact.phoneNumbers}" th:text="${phoneNumber.number}"></li>
-                </ul>
-                <span th:if="${#lists.isEmpty(contact.phoneNumbers)}">No phone numbers available.</span>
+                <span th:text="${contact.phoneNumber}"></span>
+                <span th:if="${contact.phoneNumber} == null">No phone numbers available.</span>
             </td>
             <td th:text="${contact.birthDate}"></td>
 
