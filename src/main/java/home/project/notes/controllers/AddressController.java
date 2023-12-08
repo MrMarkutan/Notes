@@ -20,7 +20,7 @@ public class AddressController {
 
     private final AddressService addressService;
 
-    @GetMapping("/list")
+    @GetMapping
     public String getAddresses(Model model) {
         model.addAttribute("addresses", addressService.getAddresses());
         return VIEW_FOLDER + "/list";
@@ -62,8 +62,9 @@ public class AddressController {
     public String updateAddress(@PathVariable int id, @ModelAttribute Address address, Model model) {
         Optional<Address> optionalAddress = addressService.updateAddress(id, address);
         if (optionalAddress.isPresent()) {
-            model.addAttribute("address", optionalAddress.get());
-            return REDIRECT + VIEW_FOLDER + "/{id}";
+            Address updatedAddress = optionalAddress.get();
+            model.addAttribute("address", updatedAddress);
+            return REDIRECT + VIEW_FOLDER + "/" + updatedAddress.getId();
         } else {
             return NOT_IMPLEMENTED_YET;
         }

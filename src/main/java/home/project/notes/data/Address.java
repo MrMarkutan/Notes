@@ -12,7 +12,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "address", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"country","city", "street", "building", "apartment"})
+        @UniqueConstraint(columnNames = {"country", "city", "street", "building", "apartment"})
 })
 @NoArgsConstructor
 @AllArgsConstructor
@@ -51,4 +51,9 @@ public class Address {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return country + ", " + city + ", " + street + ", "
+                + building + ", apt. " + apartment;
+    }
 }
