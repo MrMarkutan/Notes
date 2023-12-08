@@ -7,66 +7,71 @@
     <link rel="stylesheet" th:href="@{/webjars/bootstrap-icons/1.11.1/font/bootstrap-icons.css}">
 </head>
 <body>
-<form method="post" action="add" class="container mt-5" th:object="${contact}">
-    <div class="container">
-        <div class="row d-flex">
-            <div class="col-md-4">
-                <div class="mb-3">
-                    <label for="firstName" class="form-label">First Name</label>
-                    <input type="text" class="form-control" id="firstName" name="firstName" required>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-dark text-white text-center">
+            <h5>Create Contact</h5>
+        </div>
+        <div class="card-body">
+            <form method="post" action="add" th:object="${contact}">
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="firstName" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="firstName" name="firstName" required>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="lastName" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="birthDate" class="form-label">Birth Date</label>
+                            <input type="date" class="form-control" id="birthDate" name="birthDate" required>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-3">
-                    <label for="lastName" class="form-label">Last Name</label>
-                    <input type="text" class="form-control" id="lastName" name="lastName" required>
+                <div class="row mb-3">
+                    <label for="homeAddress" class="form-label">Home Address</label>
+                    <div class="col-md-8">
+                        <div class="mb-3">
+                            <select class="form-select" id="homeAddress" name="homeAddress">
+                                <option value="" th:text="'Select an address'"></option>
+                                <option th:if="${addresses != null}"
+                                        th:each="address : ${addresses}" th:value="${address.id}"
+                                        th:text="${address.toString()}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <a class="btn btn-outline-info" th:href="@{/address/add}">Add Address</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-3">
-                    <label for="birthDate" class="form-label">Birth Date</label>
-                    <input type="date" class="form-control" id="birthDate" name="birthDate" required>
+                <div class="row mb-3">
+                    <div class="col-md-8">
+                        <label for="phoneNumber" class="form-label">Phone Number</label>
+                        <input type="text" class="form-control" id="phoneNumber" name="phoneNumber">
+                    </div>
                 </div>
-            </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-info">Add</button>
+                            <a class="btn btn-outline-secondary ms-2" th:href="@{/contact}">
+                                Cancel <span class="bi bi-x"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
-
-    <div class="container">
-        <div class="row">
-            <label for="homeAddress" class="form-label">Home Address</label>
-            <div class="col-md-8">
-                <div class="mb-3">
-                    <select class="form-select" id="homeAddress" name="homeAddress">
-                        <option value="" th:text="'Select an address'"></option>
-                        <option th:if="${addresses != null}"
-                                th:each="address : ${addresses}" th:value="${address.id}"
-                                th:text="${address.toString()}"></option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="mb-3">
-                    <a class="btn btn-outline-info ms-2" th:href="@{/address/add}">Add Address</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container">
-        <div class="row mb-3">
-            <div class="col-md-8">
-                <label for="phoneNumber" class="form-label">Phone Number</label>
-                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber">
-            </div>
-        </div>
-    </div>
-
-    <div class="container">
-        <button type="submit" class="btn btn-info">Add</button>
-        <a class="btn btn-secondary ms-2" th:href="@{/contact}">
-            Cancel <span class="bi bi-x"></span></a>
-    </div>
-</form>
+</div>
 <script th:src="@{webjars/bootstrap/5.3.2/dist/js/bootstrap.bundle.js}"></script>
 </body>
 </html>

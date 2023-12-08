@@ -7,46 +7,123 @@
     <link rel="stylesheet" th:href="@{/webjars/bootstrap-icons/1.11.1/font/bootstrap-icons.css}">
 </head>
 <body>
-<div class="container mt-5">
-    <table class="table table-hover table-striped table-bordered table-sm">
-        <thead class="table-dark">
-        <tr class="text-center">
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Home Address</th>
-            <th>Phone Number</th>
-            <th>Birth Date</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr class="text-center">
-            <td th:text="${contact.id}"></td>
-            <td th:text="${contact.firstName}"></td>
-            <td th:text="${contact.lastName}"></td>
-            <td th:if="${contact.homeAddress != null}"
-                th:text="${contact.homeAddress.country + ', ' + contact.homeAddress.city + ', ' + contact.homeAddress.street
-                         + ', ' + contact.homeAddress.building + ', apt. ' + contact.homeAddress.apartment}">
-            </td>
-            <td th:unless="${contact.homeAddress != null}">
-                <span>No home address available.</span>
-            </td>
-            <td>
-                <span th:text="${contact.phoneNumber}"></span>
-                <span th:if="${contact.phoneNumber} == null">No phone numbers available.</span>
-            </td>
-            <td th:text="${contact.birthDate}"></td>
+<!--<div class="container mt-5">-->
+<!--    <table class="table table-hover table-striped table-bordered table-sm">-->
+<!--        <thead class="table-dark">-->
+<!--        <tr class="text-center">-->
+<!--            <th>ID</th>-->
+<!--            <th>First Name</th>-->
+<!--            <th>Last Name</th>-->
+<!--            <th>Home Address</th>-->
+<!--            <th>Phone Number</th>-->
+<!--            <th>Birth Date</th>-->
+<!--            <th>Last Updated</th>-->
+<!--            <th>Actions</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        <tr class="text-center">-->
+<!--            <td th:text="${contact.id}"></td>-->
+<!--            <td th:text="${contact.firstName}"></td>-->
+<!--            <td th:text="${contact.lastName}"></td>-->
+<!--            <td th:if="${contact.homeAddress != null}"-->
+<!--                th:text="${contact.homeAddress.toString()}">-->
+<!--            </td>-->
+<!--            <td th:unless="${contact.homeAddress != null}">-->
+<!--                <span>No home address available.</span>-->
+<!--            </td>-->
+<!--            <td th:if="${contact.phoneNumber != null and not #strings.isEmpty(contact.phoneNumber)}"-->
+<!--                th:text="${contact.phoneNumber}"></td>-->
+<!--            <td th:unless="${contact.phoneNumber != null and not #strings.isEmpty(contact.phoneNumber)}">-->
+<!--                <span>No phone number available.</span>-->
+<!--            </td>-->
+<!--            <td th:text="${contact.birthDate}"></td>-->
+<!--            <td th:text="${contact.lastUpdate}"></td>-->
+<!--            <td>-->
+<!--                <div class="container">-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-12 d-flex justify-content-center">-->
+<!--                            <a class="btn btn-info me-2"-->
+<!--                               th:href="@{/contact/{id}/edit(id=${contact.id})}"-->
+<!--                            >Update-->
+<!--                            </a>-->
+<!--                            <a class="btn btn-danger"-->
+<!--                               th:href="@{/contact/{id}/delete(id=${contact.id})}"-->
+<!--                               th:data-confirm-delete="|Are you sure you want to delete this contact?|"-->
+<!--                               onclick="return confirm(this.getAttribute('data-confirm-delete'))"-->
+<!--                            >Delete-->
+<!--                                <span class="bi bi-trash3"></span>-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--        </tbody>-->
 
-            <td>
-                <div class="container">
+<!--    </table>-->
+
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-dark text-center text-white">
+                    <h5>Contact Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-4 text-end">ID:</div>
+                        <div class="col-8" th:text="${contact.id}"></div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-4 text-end">First Name:</div>
+                        <div class="col-8" th:text="${contact.firstName}"></div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-4 text-end">Last Name:</div>
+                        <div class="col-8" th:text="${contact.lastName}"></div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-4 text-end">Home Address:</div>
+                        <div class="col-8">
+                            <span th:if="${contact.homeAddress != null}"
+                                  th:text="${contact.homeAddress.toString()}"></span>
+                            <span th:unless="${contact.homeAddress != null}">No home address available.</span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-4 text-end">Phone Number:</div>
+                        <div class="col-8">
+                            <span th:if="${contact.phoneNumber != null and not #strings.isEmpty(contact.phoneNumber)}"
+                                  th:text="${contact.phoneNumber}"></span>
+                            <span th:unless="${contact.phoneNumber != null and not #strings.isEmpty(contact.phoneNumber)}">
+                                No phone number available.
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-4 text-end">Birth Date:</div>
+                        <div class="col-8" th:text="${contact.birthDate}"></div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-4 text-end">Last Updated:</div>
+                        <div class="col-8" th:text="${contact.lastUpdate}"></div>
+                    </div>
+
                     <div class="row">
                         <div class="col-12 d-flex justify-content-center">
-                            <a class="btn btn-info btn-sm me-2"
+                            <a class="btn btn-info me-2"
                                th:href="@{/contact/{id}/edit(id=${contact.id})}"
                             >Update
                             </a>
-                            <a class="btn btn-danger btn-sm"
+                            <a class="btn btn-danger"
                                th:href="@{/contact/{id}/delete(id=${contact.id})}"
                                th:data-confirm-delete="|Are you sure you want to delete this contact?|"
                                onclick="return confirm(this.getAttribute('data-confirm-delete'))"
@@ -56,15 +133,17 @@
                         </div>
                     </div>
                 </div>
-            </td>
-
-        </tr>
-        </tbody>
-
-    </table>
-    <a class="btn btn-info btn-sm" th:href="@{/contact}">List Contacts <span class="bi bi-list"></span></a>
-    <a class="btn btn-info btn-sm" th:href="@{/}">Home <span class="bi bi-house"></span></a>
+            </div>
+            <div class="footer mt-3">
+                <a class="btn btn-outline-dark me-2" th:href="@{/contact}">List Contacts <span
+                        class="bi bi-list"></span></a>
+                <a class="btn btn-outline-success" th:href="@{/}">Home <span class="bi bi-house"></span></a>
+            </div>
+        </div>
+    </div>
 </div>
+
+
 <script th:src="@{webjars/bootstrap/5.3.2/dist/js/bootstrap.bundle.js}"></script>
 </body>
 </html>
