@@ -64,4 +64,15 @@ public class ContactService {
         }
         contact.setPhoneNumbers(savedNumbers);
     }
+
+    public void deleteNumberFromContact(int id, int nId) {
+        phoneNumberService.getPhoneNumberById(nId)
+                .ifPresent(phoneNumber -> findContactById(id)
+                        .ifPresent(contact -> {
+                            contact.getPhoneNumbers().remove(phoneNumber);
+                            phoneNumberService.deletePhoneNumber(nId);
+                            updateContact(id, contact);
+                        }));
+    }
+
 }

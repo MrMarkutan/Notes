@@ -2,7 +2,6 @@ package home.project.notes.data;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -23,9 +22,11 @@ public class Contact {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "full_name", nullable = false, length = 100)
-//    @Pattern(regexp = "^([a-zA-Z ]){3,}$", message = "Full Name can be only letters and contain whitespace, length must be more than 3 symbols")
-    private String fullName;
+    @Column(name = "first_name", nullable = false, length = 50)
+    private String firstName;
+
+    @Column(name = "last_name", nullable = false, length = 50)
+    private String lastName;
 
     @ManyToOne
     private Address homeAddress;
@@ -42,11 +43,21 @@ public class Contact {
     private LocalDateTime lastUpdate;
 
     public Contact update(Contact from) {
-        if (from.getFullName() != null) this.setFullName(from.getFullName());
+        if (from.getFirstName() != null) this.setFirstName(from.getFirstName());
+        if (from.getLastName() != null) this.setLastName(from.getLastName());
         if (from.getHomeAddress() != null) this.setHomeAddress(from.getHomeAddress());
-        if (from.getPhoneNumbers() != null && !from.getPhoneNumbers().isEmpty()) this.setPhoneNumbers(from.getPhoneNumbers());
+        if (from.getPhoneNumbers() != null && !from.getPhoneNumbers().isEmpty())
+            this.setPhoneNumbers(from.getPhoneNumbers());
         if (from.getBirthDate() != null) this.setBirthDate(from.getBirthDate());
         lastUpdate = LocalDateTime.now();
         return this;
+    }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
+    public void addPhoneNumber(PhoneNumber phoneNumber) {
+        this.phoneNumbers.add(phoneNumber);
     }
 }

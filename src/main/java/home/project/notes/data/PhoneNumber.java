@@ -1,7 +1,5 @@
 package home.project.notes.data;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
@@ -33,5 +31,10 @@ public class PhoneNumber {
         if (from.getNumber() != null) this.setNumber(from.getNumber());
 
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return number;
     }
 }
