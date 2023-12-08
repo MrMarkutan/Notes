@@ -2,40 +2,52 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Update Address</title>
+    <title>Edit Address</title>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/dist/css/bootstrap.css}">
     <link rel="stylesheet" th:href="@{/webjars/bootstrap-icons/1.11.1/font/bootstrap-icons.css}">
 </head>
 <body>
-<form method="post" th:action="@{/address/{id}/edit(id=${address.id})}" class="container mt-5">
-
-    <div class="mb-3">
-        <label for="country" class="form-label">Country</label>
-        <input type="text" class="form-control" id="country" name="country" th:value="${address.country}" required>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-dark text-white text-center">
+            <h5>Edit Address</h5>
+        </div>
+        <div class="card-body">
+            <form method="post" th:action="@{/address/{id}/edit(id=${address.id})}">
+                <div class="mb-3">
+                    <label for="country" class="form-label">Country</label>
+                    <input type="text" class="form-control" id="country" name="country" th:value="${address.country}"
+                           required>
+                </div>
+                <div class="mb-3">
+                    <label for="city" class="form-label">City</label>
+                    <input type="text" class="form-control" id="city" name="city" th:value="${address.city}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="street" class="form-label">Street</label>
+                    <input type="text" class="form-control" id="street" name="street" th:value="${address.street}"
+                           required>
+                </div>
+                <div class="mb-3">
+                    <label for="building" class="form-label">Building</label>
+                    <input type="text" class="form-control" id="building" name="building" th:value="${address.building}"
+                           required>
+                </div>
+                <div class="mb-3">
+                    <label for="apartment" class="form-label">Apartment</label>
+                    <input type="text" class="form-control" id="apartment" name="apartment"
+                           th:value="${address.apartment}" required>
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-info ms-2">Update</button>
+                    <a class="btn btn-outline-secondary ms-2" th:href="@{/address/{id}(id=${address.id})}">
+                        Cancel <span class="bi bi-x"></span>
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="mb-3">
-        <label for="city" class="form-label">City</label>
-        <input type="text" class="form-control" id="city" name="city" th:value="${address.city}" required>
-    </div>
-    <div class="mb-3">
-        <label for="street" class="form-label">Street</label>
-        <input type="text" class="form-control" id="street" name="street" th:value="${address.street}" required>
-    </div>
-    <div class="mb-3">
-        <label for="building" class="form-label">Building</label>
-        <input type="text" class="form-control" id="building" name="building" th:value="${address.building}" required>
-    </div>
-    <div class="mb-3">
-        <label for="apartment" class="form-label">Apartment</label>
-        <input type="text" class="form-control" id="apartment" name="apartment" th:value="${address.apartment}"
-               required>
-    </div>
-    <button type="submit" class="btn btn-outline-info ms-2">Update</button>
-
-    <a class="btn btn-secondary ms-2" th:href="@{/address/{id}(id=${address.id})}">
-        Cancel <span class="bi bi-x"></span></a>
-
-</form>
+</div>
 
 <script th:src="@{/webjars/bootstrap/5.3.2/dist/js/bootstrap.bundle.js}"></script>
 </body>

@@ -7,32 +7,54 @@
     <link rel="stylesheet" th:href="@{/webjars/bootstrap-icons/1.11.1/font/bootstrap-icons.css}">
 </head>
 <body>
-<form method="post" action="add" class="container mt-5">
-    <div class="mb-3">
-        <label for="country" class="form-label">Country</label>
-        <input type="text" class="form-control" id="country" name="country" required>
-    </div>
-    <div class="mb-3">
-        <label for="city" class="form-label">City</label>
-        <input type="text" class="form-control" id="city" name="city" required>
-    </div>
-    <div class="mb-3">
-        <label for="street" class="form-label">Street</label>
-        <input type="text" class="form-control" id="street" name="street" required>
-    </div>
-    <div class="mb-3">
-        <label for="building" class="form-label">Building</label>
-        <input type="text" class="form-control" id="building" name="building" required>
-    </div>
-    <div class="mb-3">
-        <label for="apartment" class="form-label">Apartment</label>
-        <input type="text" class="form-control" id="apartment" name="apartment" required>
-    </div>
-    <button type="submit" class="btn btn-info">Add</button>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-dark text-white text-center">
+            <h5>Create Address</h5>
+        </div>
+        <div class="card-body">
+            <form method="post" action="add">
+                <!-- Country -->
+                <div class="mb-3">
+                    <label for="country" class="form-label">Country</label>
+                    <input type="text" class="form-control" id="country" name="country" required>
+                </div>
 
-    <a class="btn btn-secondary ms-2" th:href="@{/address}">
-        Cancel <span class="bi bi-x"></span></a>
-</form>
+                <!-- City -->
+                <div class="mb-3">
+                    <label for="city" class="form-label">City</label>
+                    <input type="text" class="form-control" id="city" name="city" required>
+                </div>
+
+                <!-- Street -->
+                <div class="mb-3">
+                    <label for="street" class="form-label">Street</label>
+                    <input type="text" class="form-control" id="street" name="street" required>
+                </div>
+
+                <!-- Building -->
+                <div class="mb-3">
+                    <label for="building" class="form-label">Building</label>
+                    <input type="text" class="form-control" id="building" name="building" required>
+                </div>
+
+                <!-- Apartment -->
+                <div class="mb-3">
+                    <label for="apartment" class="form-label">Apartment</label>
+                    <input type="text" class="form-control" id="apartment" name="apartment" required>
+                </div>
+
+                <!-- Buttons -->
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-info">Add</button>
+                    <a class="btn btn-outline-secondary ms-2" th:href="@{/address}">
+                        Cancel <span class="bi bi-x"></span>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <script th:src="@{/webjars/bootstrap/5.3.2/dist/js/bootstrap.bundle.js}"></script>
 </body>

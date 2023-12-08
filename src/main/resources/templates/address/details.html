@@ -8,42 +8,42 @@
 </head>
 <body>
 <div class="container mt-5">
-    <table class="table table-hover table-striped table-bordered table-sm">
-        <thead class="table-dark">
-        <tr>
-            <th>ID</th>
-            <th>Country</th>
-            <th>City</th>
-            <th>Street</th>
-            <th>Building</th>
-            <th>Apartment</th>
-            <th></th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="a : ${address}">
-            <td th:text="${a.id}"></td>
-            <td th:text="${a.country}"></td>
-            <td th:text="${a.city}"></td>
-            <td th:text="${a.street}"></td>
-            <td th:text="${a.building}"></td>
-            <td th:text="${a.apartment}"></td>
-            <td>
-                <a class="align-content-sm-center btn btn-info btn-sm" th:href="@{/address/{id}/edit(id=${a.id})}">Update</a>
-            </td>
-            <td>
-                <a class="align-content-sm-center btn btn-danger btn-sm" th:href="@{/address/{id}/delete(id=${a.id})}"
-                   th:data-confirm-delete="|Are you sure you want to delete this address?|"
-                   onclick="return confirm(this.getAttribute('data-confirm-delete'))"
-                >Delete
-                    <span class="bi bi-trash3"></span></a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <a class="btn btn-info btn-sm" th:href="@{/address}">List Addresses <span class="bi bi-list"></span></a>
-    <a class="btn btn-info btn-sm" th:href="@{/}">Home <span class="bi bi-house"></span></a>
+    <div class="card">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">Address Details</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-8">
+                    <div class="list-group">
+                        <div th:each="address : ${address}" class="list-group-item">
+                            <h5 class="mb-1">ID: <span th:text="${address.id}"></span></h5>
+                            <p class="mb-1">Country: <span th:text="${address.country}"></span></p>
+                            <p class="mb-1">City: <span th:text="${address.city}"></span></p>
+                            <p class="mb-1">Street: <span th:text="${address.street}"></span></p>
+                            <p class="mb-1">Building: <span th:text="${address.building}"></span></p>
+                            <p class="mb-1">Apartment: <span th:text="${address.apartment}"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <a class="btn btn-info d-block mb-2"
+                       th:href="@{/address/{id}/edit(id=${address.id})}">Update</a>
+                    <a class="btn btn-danger d-block"
+                       th:href="@{/address/{id}/delete(id=${address.id})}"
+                       th:data-confirm-delete="|Are you sure you want to delete this address?|"
+                       onclick="return confirm(this.getAttribute('data-confirm-delete'))">
+                        Delete <span class="bi bi-trash3"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer mt-3">
+        <a class="btn btn-outline-dark me-2" th:href="@{/address}">List Address <span
+                class="bi bi-list"></span></a>
+        <a class="btn btn-outline-success" th:href="@{/}">Home <span class="bi bi-house"></span></a>
+    </div>
 </div>
 <script th:src="@{webjars/bootstrap/5.3.2/dist/js/bootstrap.bundle.js}"></script>
 </body>
