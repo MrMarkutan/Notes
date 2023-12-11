@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -43,6 +44,13 @@ public class ContactService {
 
     private void checkContact(Contact contact) {
         checkHomeAddress(contact);
+        if (!contact.getPhones().isEmpty() && !checkPhones(contact.getPhones())) {
+            throw new NumberFormatException("Wrong phone number!");
+        }
+    }
+
+    private boolean checkPhones(Set<String> phones) {
+        return phones.stream().allMatch(phone -> phone.matches("\\d{12}"));
     }
 
     private void checkHomeAddress(Contact contact) {

@@ -7,91 +7,91 @@
     <link rel="stylesheet" th:href="@{/webjars/bootstrap-icons/1.11.1/font/bootstrap-icons.css}">
 </head>
 <body>
-<form method="post" th:object="${contact}" th:action="@{/contact/{id}/edit(id=${contact.id})}" class="container mt-5">
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-8 offset-md-2">
-                <div class="card">
-                    <div class="card-header bg-dark text-white text-center">
-                        <h5>Edit Contact</h5>
-                    </div>
-                    <div class="card-body">
-                        <form method="post" th:object="${contact}" th:action="@{/contact/{id}/edit(id=${contact.id})}">
-                            <div class="row mb-3">
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        <label for="firstName" class="form-label">First Name</label>
-                                        <input type="text" class="form-control" id="firstName" name="firstName"
-                                               th:value="${contact.firstName}" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        <label for="lastName" class="form-label">Last Name</label>
-                                        <input type="text" class="form-control" id="lastName" name="lastName"
-                                               th:value="${contact.lastName}" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        <label for="birthDate" class="form-label">Birth Date</label>
-                                        <input type="date" class="form-control" id="birthDate" name="birthDate"
-                                               th:value="${contact.birthDate}" required>
-                                    </div>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-dark text-white text-center">
+                    <h5>Edit Contact</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" th:object="${contact}" th:action="@{/contact/{id}/edit(id=${contact.id})}">
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="firstName" class="form-label">First Name</label>
+                                    <input type="text" class="form-control" id="firstName" name="firstName"
+                                           th:value="${contact.firstName}" required>
                                 </div>
                             </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="lastName" class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" id="lastName" name="lastName"
+                                           th:value="${contact.lastName}" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="birthDate" class="form-label">Birth Date</label>
+                                    <input type="date" class="form-control" id="birthDate" name="birthDate"
+                                           th:value="${contact.birthDate}" required>
+                                </div>
+                            </div>
+                        </div>
 
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label for="phoneNumber" class="form-label">Phone Number</label>
-                                        <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
-                                               th:value="${contact.phoneNumber}">
-                                    </div>
+                        <div class="row mb-3">
+                            <label for="homeAddress" class="form-label">Home Address</label>
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <select class="form-select" id="homeAddress" name="homeAddress">
+                                        <option th:if="${contact.homeAddress != null}"
+                                                th:value="${contact.homeAddress.id}"
+                                                th:text="${contact.homeAddress.toString()}"></option>
+                                        <option th:if="${addresses != null}"
+                                                th:each="address : ${addresses}"
+                                                th:value="${address.id}"
+                                                th:unless="${contact.homeAddress == address}"
+                                                th:text="${address.toString()}"></option>
+                                    </select>
                                 </div>
                             </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <a class="btn btn-outline-info" th:href="@{/address/add}">Add Address</a>
+                                </div>
+                            </div>
+                        </div>
 
-                            <div class="row mb-3">
-                                <label for="homeAddress" class="form-label">Home Address</label>
-                                <div class="col-md-8">
-                                    <div class="mb-3">
-                                        <select class="form-select" id="homeAddress" name="homeAddress">
-                                            <option th:if="${contact.homeAddress != null}"
-                                                    th:value="${contact.homeAddress.id}"
-                                                    th:text="${contact.homeAddress.toString()}"></option>
-                                            <option th:if="${addresses != null}"
-                                                    th:each="address : ${addresses}"
-                                                    th:value="${address.id}"
-                                                    th:unless="${contact.homeAddress == address}"
-                                                    th:text="${address.toString()}"></option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="mb-3">
-                                        <a class="btn btn-outline-info" th:href="@{/address/add}">Add Address</a>
-                                    </div>
-                                </div>
+                        <div class="row mb-3">
+                            <div class="col-md-8">
+                                <label for="phones" class="form-label">Phone Numbers</label>
+                                <textarea class="form-control" id="phones" name="phones" rows="3"
+                                          oninput="validateNumbers(this)"><th:block th:text="${contact.listPhones()}"></th:block>
+        </textarea>
+                                <small class="text-muted">12 digits, only numeric characters are allowed (e.q. 380929908877).</small>
                             </div>
+                        </div>
 
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="mb-3">
-                                        <button type="submit" class="btn btn-info">Update</button>
-                                        <a class="btn btn-outline-secondary ms-2"
-                                           th:href="@{/contact/{id}(id=${contact.id})}">
-                                            Cancel <span class="bi bi-x"></span>
-                                        </a>
-                                    </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <button type="submit" class="btn btn-info">Update</button>
+                                    <a class="btn btn-outline-secondary ms-2"
+                                       th:href="@{/contact/{id}(id=${contact.id})}">
+                                        Cancel <span class="bi bi-x"></span>
+                                    </a>
                                 </div>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-</form>
+</div>
 <script th:src="@{webjars/bootstrap/5.3.2/dist/js/bootstrap.bundle.js}"></script>
+<script th:src="@{/validation.js}"></script>
 </body>
 </html>

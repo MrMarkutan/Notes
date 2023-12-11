@@ -43,6 +43,11 @@ public class Contact {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime lastUpdate;
 
+    @ElementCollection
+    @Column(name = "phone")
+    @CollectionTable(name = "contact_phones", joinColumns = @JoinColumn(name = "contact_id"))
+    private Set<String> phones = new LinkedHashSet<>();
+
     public Contact update(Contact from) {
         if (from.getFirstName() != null) this.setFirstName(from.getFirstName());
         if (from.getLastName() != null) this.setLastName(from.getLastName());
@@ -50,11 +55,16 @@ public class Contact {
         if (from.getPhoneNumber() != null && !from.getPhoneNumber().isEmpty())
             this.setPhoneNumber(from.getPhoneNumber());
         if (from.getBirthDate() != null) this.setBirthDate(from.getBirthDate());
+        if (from.getPhones() != null) this.setPhones(from.getPhones());
         lastUpdate = LocalDateTime.now();
         return this;
     }
 
     public String getFullName() {
         return firstName + " " + lastName;
+    }
+
+    public String listPhones() {
+        return String.join("\n", phones);
     }
 }

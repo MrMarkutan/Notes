@@ -9,6 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+
 @Controller
 @RequestMapping("/contact")
 @AllArgsConstructor
@@ -45,12 +48,22 @@ public class ContactController {
     }
 
     @PostMapping("/add")
-    public String saveContact(@ModelAttribute Contact contact
-//                              @RequestParam String phoneNumber
+    public String saveContact(@ModelAttribute Contact contact,
+                              @RequestParam String phones
     ) {
 
+        contact.setPhones(parsePhoneSet(phones));
         Contact savedContact = contactService.saveContact(contact);
         return REDIRECT + CONTACT_VIEW_FOLDER + "/" + savedContact.getId();
+    }
+
+    private static LinkedHashSet<String> parsePhoneSet(String phones) {
+        if(phones != null && !phones.isEmpty() && !phones.isBlank()) {
+            phones = phones.trim();
+            return new LinkedHashSet<>(Arrays.asList(phones.split("\r?\n")));
+        } else {
+            return new LinkedHashSet<>();
+        }
     }
 
     @GetMapping("{id}/edit")
@@ -65,7 +78,8 @@ public class ContactController {
     }
 
     @PostMapping("/{id}/edit")
-    public String updateContact(@ModelAttribute Contact contact, @PathVariable int id) {
+    public String updateContact(@ModelAttribute Contact contact, @PathVariable int id, @RequestParam String phones) {
+        contact.setPhones(parsePhoneSet(phones));
         return contactService.updateContact(id, contact)
                 .map(updatedContact -> REDIRECT + CONTACT_VIEW_FOLDER + "/" + updatedContact.getId())
                 .orElse(REDIRECT + NOT_IMPLEMENTED_YET);
@@ -76,6 +90,7 @@ public class ContactController {
         contactService.deleteContact(id);
         return REDIRECT + CONTACT_VIEW_FOLDER;
     }
+
     @GetMapping("/{id}/addNumber")
     public String getAddNumber(@PathVariable int id,
                                Model model) {
