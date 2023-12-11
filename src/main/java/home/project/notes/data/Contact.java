@@ -1,13 +1,14 @@
 package home.project.notes.data;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import home.project.notes.utils.Builders;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Builder
@@ -48,6 +49,13 @@ public class Contact {
     @CollectionTable(name = "contact_phones", joinColumns = @JoinColumn(name = "contact_id"))
     private Set<String> phones = new LinkedHashSet<>();
 
+    @OneToMany
+    @JoinColumn(name = "contact_id")
+    private Set<Contact> partners = new LinkedHashSet<>();
+
+    @Transient
+    private List<String> selectedContactIds = new ArrayList<>();
+
     public Contact update(Contact from) {
         if (from.getFirstName() != null) this.setFirstName(from.getFirstName());
         if (from.getLastName() != null) this.setLastName(from.getLastName());
@@ -56,6 +64,8 @@ public class Contact {
             this.setPhoneNumber(from.getPhoneNumber());
         if (from.getBirthDate() != null) this.setBirthDate(from.getBirthDate());
         if (from.getPhones() != null) this.setPhones(from.getPhones());
+        if (from.getPartners() != null) this.setPartners(from.getPartners());
+
         lastUpdate = LocalDateTime.now();
         return this;
     }

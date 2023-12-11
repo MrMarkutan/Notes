@@ -69,9 +69,41 @@
                                 <textarea class="form-control" id="phones" name="phones" rows="3"
                                           oninput="validateNumbers(this)"><th:block th:text="${contact.listPhones()}"></th:block>
         </textarea>
-                                <small class="text-muted">12 digits, only numeric characters are allowed (e.q. 380929908877).</small>
+                                <small class="text-muted">12 digits, only numeric characters are allowed (e.q.
+                                    380929908877).</small>
                             </div>
                         </div>
+
+
+                        <!--                        <div class="row mb-3">-->
+                        <!--                            <div class="col-md-8">-->
+                        <!--                                <label for="people" class="form-label">People</label>-->
+                        <!--                                <div class="mb-3">-->
+                        <!--                                    <select class="form-select" id="people" name="contacts" multiple="multiple">-->
+                        <!--                                        <option th:each="person : ${contact.contacts}" th:value="${person.id}" th:text="${person.getFullName()}"></option>-->
+                        <!--                                    </select>-->
+                        <!--                                </div>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+
+
+                        <div class="row mb-3">
+                            <div class="col-2">
+                                <label class="form-label">Partners</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="hidden" th:field="*{selectedContactIds}"/>
+
+                                <div th:each="person : ${contacts}" th:unless="${person.id == contact.id}">
+                                    <div class="form-check">
+                                        <span th:text="${person.getFullName()}"></span>
+                                        <input type="checkbox" th:value="${person.id}"
+                                               th:checked="${selectedContactIds != null and selectedContactIds.contains(person.id)}"
+                                               class="form-check-input" name="partners"/>
+                                    </div>
+                                </div>
+                            </div>
+                       </div>
 
 
                         <div class="row">

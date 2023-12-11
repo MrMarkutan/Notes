@@ -57,9 +57,27 @@
                         <label for="phoneNumbers" class="form-label">Phone Numbers</label>
                         <textarea class="form-control" id="phoneNumbers" name="phones" rows="3"
                                   oninput="validateNumbers(this)"></textarea>
-                        <small class="text-muted">12 digits, only numeric characters are allowed (e.q. 380929908877).</small>
+                        <small class="text-muted">12 digits, only numeric characters are allowed (e.q.
+                            380929908877).</small>
                     </div>
                 </div>
+
+                <div class="row mb-3">
+                    <div class="col-2">
+                        <label class="form-label">Partners</label>
+                    </div>
+                    <div class="col-8">
+                        <div class="form-check">
+                            <div th:each="person : ${contacts}">
+                                <span th:text="${person.getFullName()}"></span>
+                                <input type="checkbox" th:value="${person.id}" class="form-check-input"
+                                       name="partners"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <div class="row">
                     <div class="col-md-12">
                         <div class="mb-3">

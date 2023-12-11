@@ -35,7 +35,7 @@
                         <div class="col-8">
                             <span th:if="${contact.homeAddress != null}"
                                   th:text="${contact.homeAddress.toString()}"></span>
-                            <span th:unless="${contact.homeAddress != null}">No home address available.</span>
+                            <span th:unless="${contact.homeAddress != null}">No home address was selected.</span>
                         </div>
                     </div>
 
@@ -49,14 +49,29 @@
                         <div class="col-8" th:text="${contact.lastUpdate}"></div>
                     </div>
 
-                    <div class="row mb-3">
+                    <div class="row mb-3" th:if="${contact.phones != null and not #sets.isEmpty(contact.phones)}">
                         <div class="col-4 text-end">Phones:</div>
                         <div class="col-8">
                             <ul>
                                 <li th:each="phone : ${contact.phones}" th:text="${phone}"></li>
                             </ul>
-                            <span th:unless="${contact.phones != null and not #strings.isEmpty(contact.phones)}">
-                                No phone number available.
+                        </div>
+                    </div>
+
+                    <div class="row mb-3" th:if="${contact.partners != null and not #sets.isEmpty(contact.partners)}">
+                        <div class="col-4 text-end">Partners:
+                        </div>
+                        <div class="col-8">
+                            <span th:if="${contact.partners !=null}" th:each="person : ${contact.partners}">
+                                <div class="row mb-2">
+                                    <div class="col-3">
+                                        <span th:text="${person.getFullName()}"/>
+                                    </div>
+                                    <div class="col-8">
+                                     <a class="btn btn-outline-secondary btn-sm me-2"
+                                        th:href="@{/contact/{id}(id=${person.id})}">Show</a>
+                                    </div>
+                                </div>
                             </span>
                         </div>
                     </div>

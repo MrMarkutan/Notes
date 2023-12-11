@@ -44,12 +44,12 @@ public class ContactService {
 
     private void checkContact(Contact contact) {
         checkHomeAddress(contact);
-        if (!contact.getPhones().isEmpty() && !checkPhones(contact.getPhones())) {
+        if (!contact.getPhones().isEmpty() && !phonesMatchRegex(contact.getPhones())) {
             throw new NumberFormatException("Wrong phone number!");
         }
     }
 
-    private boolean checkPhones(Set<String> phones) {
+    private boolean phonesMatchRegex(Set<String> phones) {
         return phones.stream().allMatch(phone -> phone.matches("\\d{12}"));
     }
 
