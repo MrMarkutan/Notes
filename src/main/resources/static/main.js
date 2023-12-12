@@ -3,12 +3,13 @@ var phoneCounter = 1;
 function createInputPhoneNumber() {
     var input = document.createElement("input");
     input.type = "text";
+    input.title = "Enter phone number (up to 12 digits)";
     input.className = "form-control";
     input.name = "phones";
     input.placeholder = "Enter phone number (up to 12 digits)";
 
     var deleteButton = document.createElement("button");
-    deleteButton.className = "btn btn-outline-danger btn-sm mt-2 mx-2";
+    deleteButton.className = "btn btn-outline-danger btn-sm mt-1";
     deleteButton.id = "deleteButton" + phoneCounter;
     deleteButton.textContent = "Remove";
     deleteButton.onclick = function () {
@@ -62,10 +63,11 @@ function createTextarea() {
     textarea.className = "form-control mt-2";
     textarea.id = "note" + noteCounter;
     textarea.name = "notes";
+    textarea.rows = 4;
     textarea.placeholder = "Put your note here...";
 
     var deleteButton = document.createElement("button");
-    deleteButton.className = "btn btn-outline-danger btn-sm mt-2 mx-2";
+    deleteButton.className = "btn btn-outline-danger btn-sm mt-2";
     deleteButton.id = "deleteButton" + noteCounter;
     deleteButton.textContent = "Remove";
     deleteButton.onclick = function () {
