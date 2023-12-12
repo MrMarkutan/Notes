@@ -1,30 +1,77 @@
-// src/main/resources/static/main.js
+var phoneCounter = 1;
 
-function validateNumbers(textarea) {
-    var content = textarea.value;
-    textarea.value = content.replace(/[^0-9\n]/g, '');
+function createInputPhoneNumber() {
+    var input = document.createElement("input");
+    input.type = "text";
+    input.className = "form-control";
+    input.name = "phones";
+    input.placeholder = "Enter phone number (up to 12 digits)";
+
+    var deleteButton = document.createElement("button");
+    deleteButton.className = "btn btn-outline-danger btn-sm mt-2 mx-2";
+    deleteButton.id = "deleteButton" + phoneCounter;
+    deleteButton.textContent = "Remove";
+    deleteButton.onclick = function () {
+        deleteInputField(deleteButton);
+    };
+
+    var rowDiv = document.createElement("div");
+    rowDiv.className = "row mt-2 d-flex justify-content-center";
+
+    var inputDiv = document.createElement("div");
+    inputDiv.className = "col-8";
+    inputDiv.appendChild(input);
+
+    var deleteButtonDiv = document.createElement("div");
+    deleteButtonDiv.className = "col-4";
+    deleteButtonDiv.appendChild(deleteButton);
+
+    rowDiv.appendChild(inputDiv);
+    rowDiv.appendChild(deleteButtonDiv);
+
+    document.getElementById("phones").appendChild(rowDiv);
+
+    phoneCounter++;
+
+    input.addEventListener('input', function () {
+        validatePhoneNumber(input);
+    });
 }
+
+function deleteInputField(deleteButton) {
+    var rowDiv = deleteButton.parentElement.parentElement;
+    rowDiv.remove();
+    phoneCounter--;
+}
+
+function validatePhoneNumber(input) {
+    var cleanedValue = input.value.replace(/\D/g, '');
+
+    if (cleanedValue.length > 12) {
+        cleanedValue = cleanedValue.slice(0, 12);
+    }
+    input.value = cleanedValue;
+}
+
 
 var noteCounter = 1;
 
 function createTextarea() {
-    // Create a new textarea element
     var textarea = document.createElement("textarea");
+
     textarea.className = "form-control mt-2";
     textarea.id = "note" + noteCounter;
     textarea.name = "notes";
     textarea.placeholder = "Put your note here...";
 
-    // Create a new button to delete the textarea
     var deleteButton = document.createElement("button");
     deleteButton.className = "btn btn-outline-danger btn-sm mt-2 mx-2";
-    deleteButton.id = "deleteButton" + noteCounter; // Unique ID for each delete button
-    deleteButton.textContent = "Delete";
+    deleteButton.id = "deleteButton" + noteCounter;
+    deleteButton.textContent = "Remove";
     deleteButton.onclick = function () {
         deleteTextarea(textarea.id);
     };
 
-    // Create a new div to contain the textarea and delete button
     var noteDiv = document.createElement("div");
     noteDiv.className = "row mb-3";
 
@@ -39,16 +86,13 @@ function createTextarea() {
     noteDiv.appendChild(noteTextArea);
     noteDiv.appendChild(noteTextAreaDelete);
 
-    // Increment the counter for the next textarea
     noteCounter++;
 
-    // Find the container element and append the new div
     var notesContainer = document.getElementById("notes");
     notesContainer.appendChild(noteDiv);
 }
 
 function deleteTextarea(textareaId) {
-    // Find the textarea element and delete button
     var textarea = document.getElementById(textareaId);
 
     if (textarea) {
@@ -58,64 +102,37 @@ function deleteTextarea(textareaId) {
     noteCounter--;
 }
 
+function editItem(itemIndex, type) {
 
-var editedNoteIndex;
+    var itemElement = document.getElementById(`${type}${itemIndex}`);
+    itemElement.removeAttribute('readonly');
 
-function editNote(noteIndex) {
-    editedNoteIndex = noteIndex;
-    var noteElement = document.getElementById('note' + noteIndex);
-    noteElement.removeAttribute('readonly');
+    if (type === 'Phone') {
+        itemElement.addEventListener('input', function () {
+            validatePhoneNumber(itemElement);
+        });
+    }
 
-    // var originalNote = noteElement.textContent.trim();
-
-    // Create a new textarea element
-    // var textarea = document.createElement("textarea");
-    // textarea.className = "form-control";
-    // textarea.value = originalNote;
-    // textarea.id = 'editedNoteTextarea';  // Set a unique ID for the textarea
-
-    // Replace the original note content with the textarea
-    // noteElement.innerHTML = '';
-    // noteElement.appendChild(textarea);
-
-    // Change the "Edit" button to "Save"
-    var editButton = document.getElementById('editButton' + noteIndex);
+    var editButton = document.getElementById(`edit${type}Button${itemIndex}`);
     editButton.textContent = 'Save';
     editButton.onclick = function () {
-        saveEditedNote();
+        saveEditedItem(itemIndex, type);
     };
+
 }
 
-function saveEditedNote() {
-    var noteElement = document.getElementById('note' + editedNoteIndex);
-    noteElement.setAttribute('readonly', 'true');
+function saveEditedItem(itemIndex, type) {
+    var itemElement = document.getElementById(`${type}${itemIndex}`);
+    itemElement.setAttribute('readonly', 'true');
 
-
-
-    // Get the edited note content
-    // var editedNote = document.getElementById('editedNoteTextarea').value;
-
-    // Update the DOM with the edited note content
-    // var noteElement = document.getElementById('note' + editedNoteIndex);
-    // noteElement.id = 'note' + editedNoteIndex;
-    // noteElement.textContent = editedNote;
-
-    // You can also send the edited note to the server using an AJAX request
-
-    // Change the "Save" button back to "Edit"
-    var editButton = document.getElementById('editButton' + editedNoteIndex);
-    editButton.innerHTML = 'Edit <span class="bi bi-pencil"></span>';
+    var editButton = document.getElementById(`edit${type}Button${itemIndex}`);
+    editButton.innerHTML = `Edit <span class="bi bi-pencil"></span>`;
     editButton.onclick = function () {
-        editNote(editedNoteIndex);
+        editItem(itemIndex, type);
     };
 }
 
-
-function deleteNote(noteIndex) {
-    // Implement the logic to delete the note, you can use AJAX to communicate with the server
-    // Remove the corresponding DOM element if the deletion is successful
-    var noteElement = document.getElementById('note' + noteIndex);
-    noteElement.parentNode.parentNode.remove();
+function deleteItem(itemIndex, type) {
+    var itemElement = document.getElementById(`${type}${itemIndex}`);
+    itemElement.parentNode.parentNode.remove();
 }
-
-

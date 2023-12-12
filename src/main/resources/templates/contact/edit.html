@@ -58,19 +58,40 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="mb-3">
-                                    <a class="btn btn-outline-info" th:href="@{/address/add}">Create Address</a>
+                                    <a class="btn btn-outline-primary btn-sm me-2" th:href="@{/address/add}">Create Address</a>
                                 </div>
                             </div>
                         </div>
 
                         <div class="row mb-3">
-                            <div class="col-md-8">
-                                <label for="phones" class="form-label">Phone Numbers</label>
-                                <textarea class="form-control" id="phones" name="phones" rows="3"
-                                          oninput="validateNumbers(this)"><th:block th:text="${contact.listPhones()}"></th:block>
-        </textarea>
-                                <small class="text-muted">12 digits, only numeric characters are allowed (e.q.
-                                    380929908877).</small>
+                            <div class="col-md-8" id="phones">
+                                <label class="form-label">Phone Numbers</label>
+                                <div th:if="${contact.phones != null and not #lists.isEmpty(contact.phones)}">
+                                    <div th:each="phone, phoneIndex : ${contact.phones}" class="row mb-3">
+                                        <div class="col-8">
+                                            <input class="form-control" th:value="${phone}" th:name="phones"
+                                                   th:id="'Phone' + ${phoneIndex.index}" readonly/>
+                                        </div>
+                                        <div class="col-4">
+                                            <a class="btn btn-outline-secondary btn-sm ms-2"
+                                               th:onclick="'editItem(' + ${phoneIndex.index} + ', \'Phone\')'"
+                                               th:id="'editPhoneButton' + ${phoneIndex.index}">
+                                                Edit <span class="bi bi-pencil"></span>
+                                            </a>
+
+                                            <a class="btn btn-outline-secondary btn-sm ms-2"
+                                               th:onclick="'deleteItem(' + ${phoneIndex.index} + ', \'Phone\')'"
+                                               th:id="'deletePhoneButton' + ${phoneIndex.index}">
+                                                Delete <span class="bi bi-trash"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <a class="btn btn-outline-primary btn-sm me-2" onclick="createInputPhoneNumber()">Add
+                                        Phone Number</a>
+                                </div>
                             </div>
                         </div>
 
@@ -97,44 +118,23 @@
                         <div class="row mb-3">
                             <div class="col-8 mt-3" id="notes">
                                 <label class=form-label>Notes:</label>
-                                <!--                                <div th:if="${contact.notes != null and not #lists.isEmpty(contact.notes)}">-->
-                                <!--                                    <div th:each="note, noteIndex : ${contact.notes}" class="row mb-3">-->
-                                <!--                                        <div class="col-8">-->
-                                <!--                                            <span th:text="${note}" th:id="'note' + ${noteIndex.index}"></span>-->
-                                <!--                                        </div>-->
-                                <!--                                        <div class="col-4">-->
-                                <!--                                            <a class="btn btn-outline-secondary btn-sm ms-2"-->
-                                <!--                                               th:onclick="'editNote(' + ${noteIndex.index} + ')'"-->
-                                <!--                                               th:id="'editButton' + ${noteIndex.index}">-->
-                                <!--                                                Edit <span class="bi bi-pencil"></span>-->
-                                <!--                                            </a>-->
-
-                                <!--                                            <a class="btn btn-outline-secondary btn-sm ms-2"-->
-                                <!--                                               th:onclick="'deleteNote(' + ${noteIndex.index} + ')'"-->
-                                <!--                                               th:id="'deleteButton' + ${noteIndex.index}">-->
-                                <!--                                                Delete <span class="bi bi-trash"></span>-->
-                                <!--                                            </a>-->
-                                <!--                                        </div>-->
-                                <!--                                    </div>-->
-                                <!--                                </div>-->
-
                                 <div th:if="${contact.notes != null and not #lists.isEmpty(contact.notes)}">
                                     <div th:each="note, noteIndex : ${contact.notes}" class="row mb-3">
                                         <div class="col-8">
                                             <textarea class="form-control" th:text="${note}"
                                                       th:name="notes"
-                                                      th:id="'note' + ${noteIndex.index}"  readonly></textarea>
+                                                      th:id="'Note' + ${noteIndex.index}" readonly></textarea>
                                         </div>
                                         <div class="col-4">
                                             <a class="btn btn-outline-secondary btn-sm ms-2"
-                                               th:onclick="'editNote(' + ${noteIndex.index} + ')'"
-                                               th:id="'editButton' + ${noteIndex.index}">
+                                               th:onclick="'editItem(' + ${noteIndex.index} + ', \'Note\')'"
+                                               th:id="'editNoteButton' + ${noteIndex.index}">
                                                 Edit <span class="bi bi-pencil"></span>
                                             </a>
 
                                             <a class="btn btn-outline-secondary btn-sm ms-2"
-                                               th:onclick="'deleteNote(' + ${noteIndex.index} + ')'"
-                                               th:id="'deleteButton' + ${noteIndex.index}">
+                                               th:onclick="'deleteItem(' + ${noteIndex.index} + ', \'Note\')'"
+                                               th:id="'deleteNoteButton' + ${noteIndex.index}">
                                                 Delete <span class="bi bi-trash"></span>
                                             </a>
                                         </div>
@@ -167,27 +167,6 @@
     </div>
 </div>
 
-
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script th:src="@{webjars/bootstrap/5.3.2/dist/js/bootstrap.bundle.js}"></script>
 <script th:src="@{/main.js}"></script>

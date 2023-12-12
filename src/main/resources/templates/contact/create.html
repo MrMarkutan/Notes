@@ -53,14 +53,16 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <div class="col-md-8">
-                        <label for="phoneNumbers" class="form-label">Phone Numbers</label>
-                        <textarea class="form-control" id="phoneNumbers" name="phones" rows="3"
-                                  oninput="validateNumbers(this)"></textarea>
-                        <small class="text-muted">12 digits, only numeric characters are allowed (e.q.
-                            380929908877).</small>
+                    <div class="col-md-8" id="phones">
+                        <label class="form-label">Phone Numbers</label>
+                        <a class="btn btn-outline-primary btn-sm me-2" onclick="createInputPhoneNumber()">Add Number</a>
                     </div>
                 </div>
+
+<!--                <textarea class="form-control" id="phoneNumbers" name="phones" rows="3"-->
+<!--                          oninput="validateNumbers(this)"></textarea>-->
+<!--                <small class="text-muted">12 digits, only numeric characters are allowed (e.q.-->
+<!--                    380929908877).</small>-->
 
                 <div class="row mb-3">
                     <div class="col-2">

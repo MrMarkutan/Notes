@@ -10,8 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
 
 @Controller
 @RequestMapping("/contact")
@@ -51,22 +49,11 @@ public class ContactController {
     }
 
     @PostMapping("/add")
-    public String saveContact(@ModelAttribute Contact contact,
-                              @RequestParam String phones
-    ) {
-        contact.setPhones(parsePhoneSet(phones));
+    public String saveContact(@ModelAttribute Contact contact) {
         Contact savedContact = contactService.saveContact(contact);
         return REDIRECT + CONTACT_VIEW_FOLDER + "/" + savedContact.getId();
     }
 
-    private static LinkedHashSet<String> parsePhoneSet(String phones) {
-        if (phones != null && !phones.isEmpty() && !phones.isBlank()) {
-            phones = phones.trim();
-            return new LinkedHashSet<>(Arrays.asList(phones.split("\r?\n")));
-        } else {
-            return new LinkedHashSet<>();
-        }
-    }
 
     @GetMapping("{id}/edit")
     public String getUpdateContact(@PathVariable int id, Model model) {
@@ -84,7 +71,6 @@ public class ContactController {
 
     @PostMapping("/{id}/edit")
     public String updateContact(@ModelAttribute Contact contact, @PathVariable int id) {
-//            contact.setPhones(parsePhoneSet(phones.trim()));
 
         return contactService.updateContact(id, contact)
                 .map(updatedContact -> REDIRECT + CONTACT_VIEW_FOLDER + "/" + updatedContact.getId())
@@ -95,20 +81,5 @@ public class ContactController {
     public String deleteContactById(@PathVariable int id) {
         contactService.deleteContact(id);
         return REDIRECT + CONTACT_VIEW_FOLDER;
-    }
-
-    @GetMapping("/{id}/addNumber")
-    public String getAddNumber(@PathVariable int id,
-                               Model model) {
-        return contactService.findContactById(id)
-                .map(contact -> {
-                    model.addAttribute("contact", contact);
-                    return NUMBER_VIEW_FOLDER + "/create";
-                }).orElse(NOT_IMPLEMENTED_YET);
-    }
-
-    @GetMapping("/{id}/removeNote/{nId}")
-    public void deleteNote(@PathVariable int id, @PathVariable int nId){
-        contactService.removeNoteFromContact(id, nId);
     }
 }
