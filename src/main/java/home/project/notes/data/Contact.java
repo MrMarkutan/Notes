@@ -33,9 +33,6 @@ public class Contact {
     @ManyToOne
     private Address homeAddress;
 
-    @Column(name = "phone_number", length = 100)
-    private String phoneNumber;
-
     @Column(name = "birth_date")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
@@ -65,8 +62,6 @@ public class Contact {
         if (from.getFirstName() != null) this.setFirstName(from.getFirstName());
         if (from.getLastName() != null) this.setLastName(from.getLastName());
         if (from.getHomeAddress() != null) this.setHomeAddress(from.getHomeAddress());
-        if (from.getPhoneNumber() != null && !from.getPhoneNumber().isEmpty())
-            this.setPhoneNumber(from.getPhoneNumber());
         if (from.getBirthDate() != null) this.setBirthDate(from.getBirthDate());
         if (from.getPhones() != null) this.setPhones(from.getPhones());
         if (from.getPartners() != null) this.setPartners(from.getPartners());
@@ -80,11 +75,4 @@ public class Contact {
         return firstName + " " + lastName;
     }
 
-    public String listPhones() {
-        return String.join("\n", phones);
-    }
-
-    public String printNotes() {
-        return String.join("\n", notes);
-    }
 }
