@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @AllArgsConstructor
@@ -59,5 +61,20 @@ public class ContactService {
             Address savedAddress = addressService.saveAddress(homeAddress);
             contact.setHomeAddress(savedAddress);
         }
+    }
+
+    public void removeNoteFromContact(int id, int nId) {
+        findContactById(id)
+                .ifPresent(contact -> {
+                    contact.setNotes(removeNoteAtIndex(contact.getNotes(), nId));
+                    updateContact(id, contact);
+                });
+    }
+
+    private List<String> removeNoteAtIndex(List<String> notes, int index) {
+        return IntStream.range(0, notes.size())
+                .filter(i -> i != index)
+                .mapToObj(notes::get)
+                .collect(Collectors.toList());
     }
 }

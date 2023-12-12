@@ -76,6 +76,15 @@
                         </div>
                     </div>
 
+                    <div class="row mb-3" th:if="${contact.notes != null and not #lists.isEmpty(contact.notes)}">
+                        <div class="col-4 text-end">Notes:</div>
+                        <div class="col-8">
+                            <ul th:each="note, noteIndex : ${contact.notes}">
+                                <li th:text="${note}"></li>
+                            </ul>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="col-12 d-flex justify-content-center">
                             <a class="btn btn-info me-2"

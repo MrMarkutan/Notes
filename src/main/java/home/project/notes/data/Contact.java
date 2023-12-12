@@ -53,6 +53,11 @@ public class Contact {
     @JoinColumn(name = "contact_id")
     private Set<Contact> partners = new LinkedHashSet<>();
 
+    @ElementCollection
+    @Column(name = "note")
+    @CollectionTable(name = "contact_notes", joinColumns = @JoinColumn(name = "contact_id"))
+    private List<String> notes = new ArrayList<>();
+
     @Transient
     private List<String> selectedContactIds = new ArrayList<>();
 
@@ -65,6 +70,7 @@ public class Contact {
         if (from.getBirthDate() != null) this.setBirthDate(from.getBirthDate());
         if (from.getPhones() != null) this.setPhones(from.getPhones());
         if (from.getPartners() != null) this.setPartners(from.getPartners());
+        if (from.getNotes() != null) this.setNotes(from.getNotes());
 
         lastUpdate = LocalDateTime.now();
         return this;
@@ -76,5 +82,9 @@ public class Contact {
 
     public String listPhones() {
         return String.join("\n", phones);
+    }
+
+    public String printNotes() {
+        return String.join("\n", notes);
     }
 }

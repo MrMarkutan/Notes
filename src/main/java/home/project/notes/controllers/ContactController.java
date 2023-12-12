@@ -83,8 +83,8 @@ public class ContactController {
     }
 
     @PostMapping("/{id}/edit")
-    public String updateContact(@ModelAttribute Contact contact, @PathVariable int id, @RequestParam String phones) {
-        contact.setPhones(parsePhoneSet(phones.trim()));
+    public String updateContact(@ModelAttribute Contact contact, @PathVariable int id) {
+//            contact.setPhones(parsePhoneSet(phones.trim()));
 
         return contactService.updateContact(id, contact)
                 .map(updatedContact -> REDIRECT + CONTACT_VIEW_FOLDER + "/" + updatedContact.getId())
@@ -105,5 +105,10 @@ public class ContactController {
                     model.addAttribute("contact", contact);
                     return NUMBER_VIEW_FOLDER + "/create";
                 }).orElse(NOT_IMPLEMENTED_YET);
+    }
+
+    @GetMapping("/{id}/removeNote/{nId}")
+    public void deleteNote(@PathVariable int id, @PathVariable int nId){
+        contactService.removeNoteFromContact(id, nId);
     }
 }
