@@ -8,12 +8,9 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
+<div th:replace="fragments/navbar :: topnav('/contact/add', 'Add Contact')"></div>
 <div class="container mt-5">
     <div th:replace="fragments/table :: contactsTable"></div>
-    <div class="mt-3">
-        <a class="btn btn-info" th:href="@{/contact/add}">Create Contact</a>
-        <a class="btn btn-info" th:href="@{/}">Home <span class="bi bi-house"></span></a>
-    </div>
 </div>
 <script th:src="@{webjars/bootstrap/5.3.2/dist/js/bootstrap.bundle.js}"></script>
 </body>
