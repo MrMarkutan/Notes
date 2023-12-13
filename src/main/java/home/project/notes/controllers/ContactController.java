@@ -3,14 +3,13 @@ package home.project.notes.controllers;
 import home.project.notes.data.Contact;
 import home.project.notes.service.AddressService;
 import home.project.notes.service.ContactService;
-import home.project.notes.utils.Builders;
+import home.project.notes.utils.Util;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequestMapping("/contact")
@@ -42,7 +41,7 @@ public class ContactController {
 
     @GetMapping("/add")
     public String getContactForm(Model model) {
-        model.addAttribute("contact", Builders.buildContact());
+        model.addAttribute("contact", Util.buildContact());
         model.addAttribute("selectedContacts", new ArrayList<Integer>());
         model.addAttribute("addresses", addressService.getAddresses());
         model.addAttribute("contacts", contactService.getContacts());
@@ -84,7 +83,7 @@ public class ContactController {
         return REDIRECT + CONTACT_VIEW_FOLDER;
     }
 
-//    @GetMapping("/sortByFullName")
+    //    @GetMapping("/sortByFullName")
 //    public String sortByFullName(Model model) {
 //
 //        model.addAttribute("contacts", contactService.findAllSortedByFullName());
@@ -101,5 +100,11 @@ public class ContactController {
     public String sortByLastUpdated(Model model, @RequestParam(defaultValue = "asc") String direction) {
         model.addAttribute("contacts", contactService.findAllSortedByLastUpdated(direction));
         return CONTACT_VIEW_FOLDER + "/list";
+    }
+
+    @GetMapping("/{id}/greetWithTheBirthDay")
+    public String greetings(@PathVariable int id, Model model) {
+        model.addAttribute("greetingLine",contactService.greetWithABirthDay(id));
+        return CONTACT_VIEW_FOLDER + "/greetingPage";
     }
 }

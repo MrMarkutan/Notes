@@ -43,7 +43,18 @@
 
                     <div class="row mb-3">
                         <div class="col-4 text-end">Birth Date:</div>
-                        <div class="col-8" th:text="${contact.birthDate}"></div>
+                        <div class="col-8">
+                            <span th:if="${contact.birthDate != null}"
+                                  th:text="${#temporals.format(contact.birthDate, 'dd-MM-yyyy')}"></span>
+                            <!-- Додаємо кнопку для привітання з днем народження -->
+                            <!--                            <a -->
+                            <!--                                    th:if="${contact.birthDate != null &&-->
+                            <!--                            #temporals.format(contact.birthDate, 'MM-dd') == #temporals.format(#temporals.createNow(), 'MM-dd')}"-->
+                            <a class="btn btn-outline-info btn-sm ms-2"
+                               th:href="@{'/contact/' + ${contact.id} + '/greetWithTheBirthDay'}">
+                                Check for the birthday !
+                            </a>
+                        </div>
                     </div>
 
                     <div class="row mb-3" th:if="${contact.lastUpdate != null}">

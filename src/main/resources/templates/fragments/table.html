@@ -27,7 +27,11 @@
         <tbody>
         <tr class="text-center" th:each="contact, rowStat : ${contacts}">
             <td class="col-1" th:text="${rowStat.index + 1}"></td>
-            <td class="col-6" th:text="${contact.getFullName()}"></td>
+            <td>
+                <a th:href="@{/contact/{id}(id=${contact.id})}" style="text-decoration: none; color: inherit;">
+                    <span th:text="${contact.getFullName()}"></span>
+                </a>
+            </td>
             <td class="col-3" th:if="${contact.getLastUpdate()} != null" th:text="${contact.getLastUpdate()}"></td>
             <td class="col-3" th:if="${contact.getLastUpdate()} == null"><span>Never updated.</span></td>
             <td class="col-2">
