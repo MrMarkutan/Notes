@@ -2,33 +2,36 @@
     <table class="table table-hover table-striped table-bordered table-sm">
         <thead class="table-dark">
         <tr class="text-center">
-            <th>№</th>
-            <th>Contact
+            <th class="col-1">№</th>
+            <th class="col-6">Contact
                 <a th:href="@{/contact/sortByFullName?direction=asc}" class="sort-icon" th:if="${direction != 'desc'}">
-                    <span class="bi bi-arrow-up"></span>
+                    <span class="bi bi-chevron-up"></span>
                 </a>
                 <a th:href="@{/contact/sortByFullName?direction=desc}" class="sort-icon" th:if="${direction != 'asc'}">
-                    <span class="bi bi-arrow-down"></span>
+                    <span class="bi bi-chevron-down"></span>
                 </a>
             </th>
-            <th>Last Updated
-                <a th:href="@{/contact/sortByLastUpdate?direction=asc}" class="sort-icon" th:if="${direction != 'desc'}">
-                    <span class="bi bi-arrow-up"></span>
+            <th class="col-3">Last Updated
+                <a th:href="@{/contact/sortByLastUpdate?direction=asc}" class="sort-icon"
+                   th:if="${direction != 'desc'}">
+                    <span class="bi bi-chevron-up"></span>
                 </a>
-                <a th:href="@{/contact/sortByLastUpdate?direction=desc}" class="sort-icon" th:if="${direction != 'asc'}">
-                    <span class="bi bi-arrow-down"></span>
+                <a th:href="@{/contact/sortByLastUpdate?direction=desc}" class="sort-icon"
+                   th:if="${direction != 'asc'}">
+                    <span class="bi bi-chevron-down"></span>
                 </a>
             </th>
-            <th>Details</th>
+            <th class="col-2">Details</th>
         </tr>
         </thead>
         <tbody>
         <tr class="text-center" th:each="contact, rowStat : ${contacts}">
-            <td th:text="${rowStat.index + 1}"></td>
-            <td th:text="${contact.getFullName()}"></td>
-            <td th:text="${contact.getLastUpdate()}"></td>
-            <td>
-                <a class="btn btn-info" th:href="@{/contact/{id}(id=${contact.id})}">Info</a>
+            <td class="col-1" th:text="${rowStat.index + 1}"></td>
+            <td class="col-6" th:text="${contact.getFullName()}"></td>
+            <td class="col-3" th:if="${contact.getLastUpdate()} != null" th:text="${contact.getLastUpdate()}"></td>
+            <td class="col-3" th:if="${contact.getLastUpdate()} == null"><span>Never updated.</span></td>
+            <td class="col-2">
+                <div th:replace="fragments/buttons :: infoButton(${'/contact/' + contact.id}, 'Info', 'bi bi-info-circle')"></div>
             </td>
         </tr>
         </tbody>
@@ -50,15 +53,15 @@
         </tr>
         </thead>
         <tbody>
-        <tr class="text-center" th:each="a, rowStat : ${addresses}">
+        <tr class="text-center" th:each="address, rowStat : ${addresses}">
             <td th:text="${rowStat.index + 1}"></td>
-            <td th:text="${a.country}"></td>
-            <td th:text="${a.city}"></td>
-            <td th:text="${a.street}"></td>
-            <td th:text="${a.building}"></td>
-            <td th:text="${a.apartment}"></td>
+            <td th:text="${address.country}"></td>
+            <td th:text="${address.city}"></td>
+            <td th:text="${address.street}"></td>
+            <td th:text="${address.building}"></td>
+            <td th:text="${address.apartment}"></td>
             <td>
-                <a class="btn btn-info" th:href="@{/address/{id}(id=${a.id})}">Info</a>
+                <div th:replace="fragments/buttons :: infoButton(${'/address/' + address.id}, 'Info', 'bi bi-info-circle')"></div>
             </td>
         </tr>
         </tbody>

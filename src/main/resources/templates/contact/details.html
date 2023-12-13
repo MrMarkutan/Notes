@@ -46,7 +46,7 @@
                         <div class="col-8" th:text="${contact.birthDate}"></div>
                     </div>
 
-                    <div class="row mb-3">
+                    <div class="row mb-3" th:if="${contact.lastUpdate != null}">
                         <div class="col-4 text-end">Last Updated:</div>
                         <div class="col-8" th:text="${contact.lastUpdate}"></div>
                     </div>
