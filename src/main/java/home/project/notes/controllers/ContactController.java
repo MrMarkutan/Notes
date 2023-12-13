@@ -83,12 +83,6 @@ public class ContactController {
         return REDIRECT + CONTACT_VIEW_FOLDER;
     }
 
-    //    @GetMapping("/sortByFullName")
-//    public String sortByFullName(Model model) {
-//
-//        model.addAttribute("contacts", contactService.findAllSortedByFullName());
-//        return CONTACT_VIEW_FOLDER + "/list";
-//    }
     @GetMapping("/sortByFullName")
     public String sortByFullName(Model model, @RequestParam(defaultValue = "asc") String direction) {
 
@@ -104,7 +98,7 @@ public class ContactController {
 
     @GetMapping("/{id}/greetWithTheBirthDay")
     public String greetings(@PathVariable int id, Model model) {
-        model.addAttribute("greetingLine",contactService.greetWithABirthDay(id));
+        model.addAttribute("greetingLine", contactService.greetWithABirthDay(id));
         return CONTACT_VIEW_FOLDER + "/greetingPage";
     }
 }

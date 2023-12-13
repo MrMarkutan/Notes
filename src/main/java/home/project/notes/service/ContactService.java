@@ -93,4 +93,16 @@ public class ContactService {
         return contact.getBirthDate().getDayOfMonth() == date.getDayOfMonth()
                 && contact.getBirthDate().getMonthValue() == date.getMonthValue();
     }
+
+    public List<Contact> getFirstNameContainsOrLastNameContains(String firstName, String lastName) {
+        return contactRepository.findByFirstNameOrLastName(firstName, lastName);
+    }
+
+    public List<Contact> getPhonesContaining(String number) {
+        return contactRepository.findByPhonesContaining(number);
+    }
+
+    public List<Contact> getBirthYearEquals(int year){
+        return contactRepository.findByBirthYear(year);
+    }
 }
