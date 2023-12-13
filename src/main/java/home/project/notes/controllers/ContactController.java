@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/contact")
@@ -23,7 +24,7 @@ public class ContactController {
     private final ContactService contactService;
     private final AddressService addressService;
 
-    @GetMapping
+    @GetMapping({"/", "", "/index"})
     public String getAllContacts(Model model) {
         model.addAttribute("contacts", contactService.getContacts());
         return CONTACT_VIEW_FOLDER + "/list";
@@ -81,5 +82,24 @@ public class ContactController {
     public String deleteContactById(@PathVariable int id) {
         contactService.deleteContact(id);
         return REDIRECT + CONTACT_VIEW_FOLDER;
+    }
+
+//    @GetMapping("/sortByFullName")
+//    public String sortByFullName(Model model) {
+//
+//        model.addAttribute("contacts", contactService.findAllSortedByFullName());
+//        return CONTACT_VIEW_FOLDER + "/list";
+//    }
+    @GetMapping("/sortByFullName")
+    public String sortByFullName(Model model, @RequestParam(defaultValue = "asc") String direction) {
+
+        model.addAttribute("contacts", contactService.findAllSortedByFullName(direction));
+        return CONTACT_VIEW_FOLDER + "/list";
+    }
+
+    @GetMapping("/sortByLastUpdate")
+    public String sortByLastUpdated(Model model, @RequestParam(defaultValue = "asc") String direction) {
+        model.addAttribute("contacts", contactService.findAllSortedByLastUpdated(direction));
+        return CONTACT_VIEW_FOLDER + "/list";
     }
 }

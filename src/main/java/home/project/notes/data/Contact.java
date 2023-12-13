@@ -3,6 +3,7 @@ package home.project.notes.data;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -37,6 +38,7 @@ public class Contact {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
 
+    @LastModifiedDate
     @Column(name = "last_update")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime lastUpdate;

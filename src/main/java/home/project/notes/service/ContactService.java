@@ -4,13 +4,12 @@ import home.project.notes.data.Address;
 import home.project.notes.data.Contact;
 import home.project.notes.repos.ContactRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Service
 @AllArgsConstructor
@@ -63,18 +62,24 @@ public class ContactService {
         }
     }
 
-    public void removeNoteFromContact(int id, int nId) {
-        findContactById(id)
-                .ifPresent(contact -> {
-                    contact.setNotes(removeNoteAtIndex(contact.getNotes(), nId));
-                    updateContact(id, contact);
-                });
+
+    public List<Contact> findAllSortedByFullName(String direction) {
+        Sort sort = getSort(direction, "firstName", "lastName");
+
+        return contactRepository.findAll(sort);
     }
 
-    private List<String> removeNoteAtIndex(List<String> notes, int index) {
-        return IntStream.range(0, notes.size())
-                .filter(i -> i != index)
-                .mapToObj(notes::get)
-                .collect(Collectors.toList());
+
+    public List<Contact> findAllSortedByLastUpdated(String direction) {
+        Sort sort = getSort(direction, "lastUpdate");
+        return contactRepository.findAll(sort);
+    }
+
+    private static Sort getSort(String direction, String... properties) {
+        Sort sort = Sort.by(properties);
+        if ("desc".equalsIgnoreCase(direction)) {
+            sort = sort.descending();
+        }
+        return sort;
     }
 }
