@@ -1,0 +1,6 @@
+<div th:fragment="infoButton(link, text, icon)">
+    <a class="btn btn-info" th:href="${link}">
+        <span th:if="${icon}" th:class="${icon}"></span>
+        <span th:text="${text}"></span>
+    </a>
+</div>

@@ -1,4 +1,3 @@
-<!-- resources/templates/fragments/table.html -->
 <div th:fragment="contactsTable">
     <table class="table table-hover table-striped table-bordered table-sm">
         <thead class="table-dark">
@@ -30,6 +29,36 @@
             <td th:text="${contact.getLastUpdate()}"></td>
             <td>
                 <a class="btn btn-info" th:href="@{/contact/{id}(id=${contact.id})}">Info</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<div th:fragment="addressesTable">
+    <table class="table table-hover table-striped table-bordered table-sm">
+        <thead class="table-dark">
+        <tr class="text-center">
+            <th>№</th>
+            <th>Country</th>
+            <th>City</th>
+            <th>Street</th>
+            <th>Building</th>
+            <th>Apartment</th>
+            <th>Details</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="text-center" th:each="a, rowStat : ${addresses}">
+            <td th:text="${rowStat.index + 1}"></td>
+            <td th:text="${a.country}"></td>
+            <td th:text="${a.city}"></td>
+            <td th:text="${a.street}"></td>
+            <td th:text="${a.building}"></td>
+            <td th:text="${a.apartment}"></td>
+            <td>
+                <a class="btn btn-info" th:href="@{/address/{id}(id=${a.id})}">Info</a>
             </td>
         </tr>
         </tbody>
