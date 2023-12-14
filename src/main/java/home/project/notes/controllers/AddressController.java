@@ -14,7 +14,7 @@ import java.util.Optional;
 @RequestMapping("/address")
 public class AddressController {
 
-    private static final String NOT_IMPLEMENTED_YET = "notimplementedyet";
+    private static final String NOT_FOUND = "notfound";
     private static final String VIEW_FOLDER = "address";
     private static final String REDIRECT = "redirect:/";
 
@@ -44,7 +44,7 @@ public class AddressController {
                     model.addAttribute("address", address);
                     return VIEW_FOLDER + "/details";
                 })
-                .orElse(NOT_IMPLEMENTED_YET);
+                .orElse(NOT_FOUND);
     }
 
 
@@ -55,7 +55,7 @@ public class AddressController {
                     model.addAttribute("address", address);
                     return VIEW_FOLDER + "/edit";
                 })
-                .orElse(NOT_IMPLEMENTED_YET);
+                .orElse(NOT_FOUND);
     }
 
     @PostMapping("/{id}/edit")
@@ -66,7 +66,7 @@ public class AddressController {
             model.addAttribute("address", updatedAddress);
             return REDIRECT + VIEW_FOLDER + "/" + updatedAddress.getId();
         } else {
-            return NOT_IMPLEMENTED_YET;
+            return NOT_FOUND;
         }
     }
 

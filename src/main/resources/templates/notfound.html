@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <title>Index</title>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/dist/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap-icons/1.11.1/font/bootstrap-icons.css}">
+
 </head>
 <body>
+<div th:replace="~{fragments/navbar :: topnav('', '')}"></div>
+
 <div class="container mt-5">
-    <h2 th:text="'Not Implemented Yet!!!!'">Not Implemented Yet!</h2>
+    <h2 th:text="'Not Found!!!!'">Not Found Yet!</h2>
 </div>
-<script th:src="@{webjars/bootstrap/5.3.2/dist/js/bootstrap.bundle.js}"></script>
 </body>
 </html>

@@ -16,10 +16,9 @@ import java.util.ArrayList;
 @AllArgsConstructor
 public class ContactController {
     private static final String CONTACT_VIEW_FOLDER = "contact";
-    private static final String NUMBER_VIEW_FOLDER = "numbers";
     private static final String REDIRECT = "redirect:/";
 
-    private static final String NOT_IMPLEMENTED_YET = "notimplementedyet";
+    private static final String NOT_FOUND = "notfound";
     private final ContactService contactService;
     private final AddressService addressService;
 
@@ -36,7 +35,7 @@ public class ContactController {
                     model.addAttribute("contact", contact);
                     return CONTACT_VIEW_FOLDER + "/details";
                 })
-                .orElse(NOT_IMPLEMENTED_YET);
+                .orElse(NOT_FOUND);
     }
 
     @GetMapping("/add")
@@ -66,7 +65,7 @@ public class ContactController {
                             contact.getPartners().stream().map(Contact::getId).toList());
                     return CONTACT_VIEW_FOLDER + "/edit";
                 })
-                .orElse(NOT_IMPLEMENTED_YET);
+                .orElse(NOT_FOUND);
     }
 
     @PostMapping("/{id}/edit")
@@ -74,7 +73,7 @@ public class ContactController {
 
         return contactService.updateContact(id, contact)
                 .map(updatedContact -> REDIRECT + CONTACT_VIEW_FOLDER + "/" + updatedContact.getId())
-                .orElse(REDIRECT + NOT_IMPLEMENTED_YET);
+                .orElse(REDIRECT + NOT_FOUND);
     }
 
     @GetMapping("/{id}/delete")
