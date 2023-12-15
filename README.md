@@ -80,3 +80,27 @@ This will launch the Spring Boot application, connecting to the MySQL database c
 
 The application should now be accessible at http://localhost:9090. 
 You can interact with the Notes application and explore its features.
+
+# Contact
+
+The `Contact` class represents a contact in the application. It is used to store information about individuals, including their name, address, birthdate, contact details, and related notes.
+
+## Usage
+
+The `Contact` class is a fundamental part of the application's data model, representing individual contacts with various attributes. It is utilized for CRUD operations and maintaining relationships between contacts.
+
+# Address
+
+The `Address` class represents a physical address in the application. It is used to store information about the location of a contact, including the country, city, street, building, and apartment.
+
+## Usage
+
+The `Address` class is an integral part of the application's data model, representing physical addresses associated with contacts. It is utilized for CRUD operations and maintaining relationships between contacts and their addresses.
+
+# SearchResult
+
+The `SearchResult` class is a simple data structure used to represent the result of a search operation in the application. It contains lists of contacts and addresses matching the search criteria.
+
+## Usage
+
+The `SearchResult` class is used to encapsulate the results of various search operations in the application. It provides a convenient way to organize and transport lists of contacts and addresses based on user search queries.
