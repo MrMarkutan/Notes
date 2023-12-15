@@ -32,12 +32,10 @@
                         <div class="col-8" th:text="${contact.lastName}"></div>
                     </div>
 
-                    <div class="row mb-3">
+                    <div class="row mb-3" th:if="${contact.homeAddress != null}">
                         <div class="col-4 text-end">Home Address:</div>
                         <div class="col-8">
-                            <span th:if="${contact.homeAddress != null}"
-                                  th:text="${contact.homeAddress.toString()}"></span>
-                            <span th:unless="${contact.homeAddress != null}">No home address was selected.</span>
+                            <span th:text="${contact.homeAddress.toString()}"></span>
                         </div>
                     </div>
 
