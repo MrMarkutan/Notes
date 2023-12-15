@@ -35,7 +35,7 @@
             <td class="col-3" th:if="${contact.getLastUpdate()} != null" th:text="${contact.getLastUpdate()}"></td>
             <td class="col-3" th:if="${contact.getLastUpdate()} == null"><span>Never updated.</span></td>
             <td class="col-2">
-                <div th:replace="fragments/buttons :: infoButton(${'/contact/' + contact.id}, 'Info', 'bi bi-info-circle')"></div>
+                <div th:replace="~{fragments/buttons :: infoButton(${'/contact/' + contact.id}, 'Info', 'bi bi-info-circle')}"></div>
             </td>
         </tr>
         </tbody>
@@ -65,7 +65,7 @@
             <td th:text="${address.building}"></td>
             <td th:text="${address.apartment}"></td>
             <td>
-                <div th:replace="fragments/buttons :: infoButton(${'/address/' + address.id}, 'Info', 'bi bi-info-circle')"></div>
+                <div th:replace="~{fragments/buttons :: infoButton(${'/address/' + address.id}, 'Info', 'bi bi-info-circle')}"></div>
             </td>
         </tr>
         </tbody>

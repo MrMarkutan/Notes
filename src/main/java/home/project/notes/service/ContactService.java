@@ -102,7 +102,14 @@ public class ContactService {
         return contactRepository.findByPhonesContaining(number);
     }
 
-    public List<Contact> getBirthYearEquals(int year){
+    public List<Contact> getBirthYearEquals(int year) {
         return contactRepository.findByBirthYear(year);
+    }
+
+    public List<Contact> searchByAddress(String country, String city, String street, Integer building, Integer apartment) {
+        List<Address> addresses = addressService.searchAddresses(country, city, street, building, apartment);
+        return addresses.stream()
+                .flatMap(address -> contactRepository.findByHomeAddress(address).stream())
+                .toList();
     }
 }

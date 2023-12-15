@@ -15,6 +15,8 @@ public class SearchService {
 
     public SearchResult searchByFullName(String firstName, String lastName) {
         SearchResult result = new SearchResult();
+        if (firstName.isBlank()) firstName = null;
+        if (lastName.isBlank()) lastName = null;
 
         List<Contact> contacts = contactService.getFirstNameContainsOrLastNameContains(firstName, lastName).stream()
                 .distinct()
@@ -37,5 +39,20 @@ public class SearchService {
         List<Contact> contacts = contactService.getBirthYearEquals(year);
         result.setContacts(contacts);
         return result;
+    }
+
+    public SearchResult addressSearch(String country,
+                                      String city,
+                                      String street,
+                                      Integer building,
+                                      Integer apartment) {
+
+        if (country.isBlank()) country = null;
+        if (city.isBlank()) city = null;
+        if (street.isBlank()) street = null;
+
+        List<Contact> contacts = contactService.searchByAddress(country, city, street, building, apartment);
+
+        return new SearchResult(contacts, null);
     }
 }

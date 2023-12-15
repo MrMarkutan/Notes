@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Index</title>
+    <title>Results</title>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/dist/css/bootstrap.css}">
     <link rel="stylesheet" th:href="@{/webjars/bootstrap-icons/1.11.1/font/bootstrap-icons.css}">
 
@@ -17,18 +17,21 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-8">
-                    <div th:if="${searchResult != null}">
-                        <label class="form-label">Contacts</label>
-                        <div th:if="${searchResult.contacts != null}">
-                            <div th:each="contact : ${searchResult.contacts}">
+                <div th:if="${searchResult != null}">
+                    <label class="form-label">Contacts</label>
+                    <div th:if="${searchResult.contacts != null}">
+                        <div th:each="contact : ${searchResult.contacts}" class="row mb-2">
+                            <div class="col-md-4">
                                 <a th:href="@{/contact/{id}(id=${contact.id})}">
                                     <span th:text="${contact.getFullName()}"></span>
                                 </a>
                             </div>
+                            <div class="col-md-8">
+                                <span th:text="${contact.homeAddress}"></span>
+                            </div>
                         </div>
                         <div th:unless="${searchResult.contacts != null and not #lists.isEmpty(searchResult.contacts)}">
-                            <p>No contacts found.</p>
+                            <p>No contacts were found.</p>
                         </div>
                     </div>
                 </div>

@@ -59,4 +59,13 @@ public class AddressService {
     public List<Address> getAddresses() {
         return addressRepository.findAll();
     }
+
+    public List<Address> searchAddresses(String country,
+                                         String city,
+                                         String street,
+                                         Integer building,
+                                         Integer apartment) {
+        return addressRepository
+                .findByCountryAndCityAndStreetAndBuildingAndApartment(country, city, street, building, apartment);
+    }
 }

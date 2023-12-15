@@ -41,7 +41,7 @@ public class SearchController {
 
 
     @GetMapping("/fullName")
-    public String search(
+    public String fullNameSearch(
             @RequestParam(name = "firstName") String firstName,
             @RequestParam(name = "lastName") String lastName,
             Model model) {
@@ -58,6 +58,18 @@ public class SearchController {
     @GetMapping("/year")
     public String yearSearch(@RequestParam(name = "year") int year, Model model) {
         model.addAttribute("searchResult", searchService.yearSearch(year));
+        return SEARCH_RESULTS;
+    }
+
+    @GetMapping("/address")
+    public String searchByAddress(@RequestParam(required = false) String country,
+                                  @RequestParam(required = false) String city,
+                                  @RequestParam(required = false) String street,
+                                  @RequestParam(required = false) Integer building,
+                                  @RequestParam(required = false) Integer apartment,
+                                  Model model) {
+        model.addAttribute("searchResult",
+                searchService.addressSearch(country, city, street, building, apartment));
         return SEARCH_RESULTS;
     }
 }
