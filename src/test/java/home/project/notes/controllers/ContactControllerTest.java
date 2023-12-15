@@ -9,8 +9,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.ui.Model;
 
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -43,22 +41,12 @@ class ContactControllerTest {
     @Test
     void getContactWithValidIdShouldReturnCorrectViewNameAndAttributes() {
         int id = 1;
-        when(contactService.findContactById(id)).thenReturn(Optional.of(new Contact()));
+        when(contactService.findContactById(id)).thenReturn(new Contact());
 
         String viewName = contactController.getContact(id, model);
 
         verify(model).addAttribute(eq("contact"), any());
         assertEquals("contact/details", viewName);
-    }
-
-    @Test
-    void getContactWithInvalidIdShouldReturnNotFoundViewName() {
-        int id = 1;
-        when(contactService.findContactById(id)).thenReturn(Optional.empty());
-
-        String viewName = contactController.getContact(id, model);
-
-        assertEquals("notfound", viewName);
     }
 
     @Test
@@ -86,7 +74,7 @@ class ContactControllerTest {
     @Test
     void getUpdateContactWithValidIdShouldReturnCorrectViewNameAndAttributes() {
         int id = 1;
-        when(contactService.findContactById(id)).thenReturn(Optional.of(new Contact()));
+        when(contactService.findContactById(id)).thenReturn(new Contact());
 
         String viewName = contactController.getUpdateContact(id, model);
 
@@ -98,38 +86,18 @@ class ContactControllerTest {
     }
 
     @Test
-    void getUpdateContactWithInvalidIdShouldReturnNotFoundViewName() {
-        int id = 1;
-        when(contactService.findContactById(id)).thenReturn(Optional.empty());
-
-        String viewName = contactController.getUpdateContact(id, model);
-
-        assertEquals("notfound", viewName);
-    }
-
-    @Test
     void updateContactWithValidIdShouldRedirectToContactDetails() {
         int id = 1;
         Contact contact = new Contact();
         Contact fakeContact = new Contact();
         fakeContact.setId(id);
-        when(contactService.updateContact(id, contact)).thenReturn(Optional.of(fakeContact));
+        when(contactService.updateContact(id, contact)).thenReturn(fakeContact);
 
         String redirectURL = contactController.updateContact(contact, id);
 
         assertEquals("redirect:/contact/1", redirectURL);
     }
 
-    @Test
-    void updateContactWithInvalidIdShouldRedirectToNotFound() {
-        int id = 1;
-        Contact contact = new Contact();
-        when(contactService.updateContact(id, contact)).thenReturn(Optional.empty());
-
-        String redirectURL = contactController.updateContact(contact, id);
-
-        assertEquals("redirect:/notfound", redirectURL);
-    }
 
     @Test
     void deleteContactByIdShouldRedirectToContactList() {

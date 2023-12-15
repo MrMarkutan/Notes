@@ -2,6 +2,7 @@ package home.project.notes.service;
 
 import home.project.notes.data.Address;
 import home.project.notes.data.Contact;
+import home.project.notes.exception.ResourceNotFoundException;
 import home.project.notes.repos.ContactRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import static home.project.notes.utils.Util.getSort;
@@ -29,21 +29,19 @@ public class ContactService {
         return contactRepository.save(contact);
     }
 
-    public Optional<Contact> findContactById(Integer id) {
-        return contactRepository.findById(id);
+    public Contact findContactById(Integer id) {
+        return contactRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Contact with ID: %d was not found.", id)
+                ));
     }
 
     public void deleteContact(int id) {
-        findContactById(id).ifPresent(contactRepository::delete);
+        contactRepository.delete(findContactById(id));
     }
 
-    public Optional<Contact> updateContact(int id, Contact newContact) {
-        return findContactById(id)
-                .map(existingContact -> {
-                    existingContact.update(newContact);
-                    return existingContact;
-                })
-                .map(this::saveContact);
+    public Contact updateContact(int id, Contact newContact) {
+        Contact updated = findContactById(id).update(newContact);
+        return saveContact(updated);
     }
 
     private void checkContact(Contact contact) {
@@ -68,7 +66,6 @@ public class ContactService {
 
     public List<Contact> findAllSortedByFullName(String direction) {
         Sort sort = getSort(direction, "firstName", "lastName");
-
         return contactRepository.findAll(sort);
     }
 
@@ -79,14 +76,10 @@ public class ContactService {
     }
 
     public String greetWithABirthDay(int id) {
-        return findContactById(id)
-                .map(contact -> {
-                    LocalDate today = LocalDate.now();
-                    return isBirthDay(contact, today)
-                            ? "Happy Birthday, " + contact.getFullName() + "!"
-                            : "Sorry, birthday of " + contact.getFullName() + " is " + contact.getBirthDate() + "!";
-                })
-                .orElse("Contact not found with ID: " + id);
+        Contact contactById = findContactById(id);
+        return isBirthDay(contactById, LocalDate.now())
+                ? "Happy Birthday, " + contactById.getFullName() + "!"
+                : "Sorry, birthday of " + contactById.getFullName() + " is " + contactById.getBirthDate() + "!";
     }
 
     private boolean isBirthDay(Contact contact, LocalDate date) {

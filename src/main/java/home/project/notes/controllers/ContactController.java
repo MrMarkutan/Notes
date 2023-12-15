@@ -1,10 +1,12 @@
 package home.project.notes.controllers;
 
 import home.project.notes.data.Contact;
+import home.project.notes.exception.ResourceNotFoundException;
 import home.project.notes.service.AddressService;
 import home.project.notes.service.ContactService;
 import home.project.notes.utils.Util;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +20,15 @@ public class ContactController {
     private static final String CONTACT_VIEW_FOLDER = "contact";
     private static final String REDIRECT = "redirect:/";
 
-    private static final String NOT_FOUND = "notfound";
     private final ContactService contactService;
     private final AddressService addressService;
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handleResourceNotFoundException(ResourceNotFoundException e, Model model) {
+        model.addAttribute("error", e.getMessage());
+        return "notfound";
+    }
 
     @GetMapping({"/", "", "/index"})
     public String getAllContacts(Model model) {
@@ -30,12 +38,8 @@ public class ContactController {
 
     @GetMapping("/{id}")
     public String getContact(@PathVariable int id, Model model) {
-        return contactService.findContactById(id)
-                .map(contact -> {
-                    model.addAttribute("contact", contact);
-                    return CONTACT_VIEW_FOLDER + "/details";
-                })
-                .orElse(NOT_FOUND);
+        model.addAttribute("contact", contactService.findContactById(id));
+        return CONTACT_VIEW_FOLDER + "/details";
     }
 
     @GetMapping("/add")
@@ -56,24 +60,19 @@ public class ContactController {
 
     @GetMapping("{id}/edit")
     public String getUpdateContact(@PathVariable int id, Model model) {
-        return contactService.findContactById(id)
-                .map(contact -> {
-                    model.addAttribute("contact", contact);
-                    model.addAttribute("addresses", addressService.getAddresses());
-                    model.addAttribute("contacts", contactService.getContacts());
-                    model.addAttribute("selectedContactIds",
-                            contact.getPartners().stream().map(Contact::getId).toList());
-                    return CONTACT_VIEW_FOLDER + "/edit";
-                })
-                .orElse(NOT_FOUND);
+        Contact contact = contactService.findContactById(id);
+        model.addAttribute("contact", contact);
+        model.addAttribute("addresses", addressService.getAddresses());
+        model.addAttribute("contacts", contactService.getContacts());
+        model.addAttribute("selectedContactIds",
+                contact.getPartners().stream().map(Contact::getId).toList());
+        return CONTACT_VIEW_FOLDER + "/edit";
     }
 
     @PostMapping("/{id}/edit")
     public String updateContact(@ModelAttribute Contact contact, @PathVariable int id) {
-
-        return contactService.updateContact(id, contact)
-                .map(updatedContact -> REDIRECT + CONTACT_VIEW_FOLDER + "/" + updatedContact.getId())
-                .orElse(REDIRECT + NOT_FOUND);
+        Contact updated = contactService.updateContact(id, contact);
+        return REDIRECT + CONTACT_VIEW_FOLDER + "/" + updated.getId();
     }
 
     @GetMapping("/{id}/delete")

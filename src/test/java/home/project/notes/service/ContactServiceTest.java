@@ -1,6 +1,7 @@
 package home.project.notes.service;
 
 import home.project.notes.data.Contact;
+import home.project.notes.exception.ResourceNotFoundException;
 import home.project.notes.repos.ContactRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class ContactServiceTest {
@@ -57,19 +59,19 @@ class ContactServiceTest {
         Contact expectedContact = new Contact();
         when(contactRepository.findById(id)).thenReturn(Optional.of(expectedContact));
 
-        Optional<Contact> actualContact = contactService.findContactById(id);
+        Contact actualContact = contactService.findContactById(id);
 
-        assertEquals(Optional.of(expectedContact), actualContact);
+        assertEquals(expectedContact, actualContact);
     }
 
     @Test
-    void findContactByIdWithInvalidIdShouldReturnEmptyOptional() {
-        int id = 1;
-        when(contactRepository.findById(id)).thenReturn(Optional.empty());
+    void findContactByIdWithInvalidIdShouldReturnThrow() {
+        int nonExistingId = 999;
+        when(contactRepository.findById(nonExistingId)).thenReturn(Optional.empty());
 
-        Optional<Contact> actualContact = contactService.findContactById(id);
+        assertThrows(ResourceNotFoundException.class, () -> contactService.findContactById(nonExistingId));
 
-        assertEquals(Optional.empty(), actualContact);
+        verify(contactRepository).findById(nonExistingId);
     }
 
     @Test
@@ -91,19 +93,19 @@ class ContactServiceTest {
         when(contactRepository.findById(id)).thenReturn(Optional.of(existingContact));
         when(contactRepository.save(existingContact)).thenReturn(existingContact);
 
-        Optional<Contact> updatedContact = contactService.updateContact(id, newContact);
+        Contact updatedContact = contactService.updateContact(id, newContact);
 
-        assertEquals(Optional.of(existingContact), updatedContact);
+        assertEquals(existingContact, updatedContact);
     }
 
     @Test
-    void updateContactWithInvalidIdShouldReturnEmptyOptional() {
+    void updateContactWithInvalidIdShouldThrow() {
         int id = 1;
         when(contactRepository.findById(id)).thenReturn(Optional.empty());
 
-        Optional<Contact> updatedContact = contactService.updateContact(id, new Contact());
+        assertThrows(ResourceNotFoundException.class, () -> contactService.updateContact(id, new Contact()));
 
-        assertEquals(Optional.empty(), updatedContact);
+        verify(contactRepository, times(1)).findById(id);
     }
 
     @Test
@@ -137,12 +139,12 @@ class ContactServiceTest {
 
     @Test
     void greetWithABirthDayWithInvalidIdShouldReturnErrorMessage() {
-        int id = 1;
-        when(contactRepository.findById(id)).thenReturn(Optional.empty());
+        int invalidId = 999;
+        when(contactRepository.findById(invalidId)).thenReturn(Optional.empty());
 
-        String greeting = contactService.greetWithABirthDay(id);
+        assertThrows(ResourceNotFoundException.class, () -> contactService.greetWithABirthDay(invalidId));
 
-        assertEquals("Contact not found with ID: " + id, greeting);
+        verify(contactRepository).findById(invalidId);
     }
 }
 
