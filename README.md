@@ -63,7 +63,7 @@ Make sure you have the following installed on your machine:
 
    ```bash
    git clone https://github.com/MrMarkutan/Notes.git
-   cd notes-spring-boot
+   cd Notes
 2. Run Docker Compose:
 
     ```bash
