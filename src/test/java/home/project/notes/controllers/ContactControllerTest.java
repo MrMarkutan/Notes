@@ -39,7 +39,7 @@ class ContactControllerTest {
     }
 
     @Test
-    void getContactWithValidIdShouldReturnCorrectViewNameAndAttributes() {
+    void getContactWithIdShouldReturnCorrectViewNameAndAttributes() {
         int id = 1;
         when(contactService.findContactById(id)).thenReturn(new Contact());
 
@@ -72,7 +72,7 @@ class ContactControllerTest {
     }
 
     @Test
-    void getUpdateContactWithValidIdShouldReturnCorrectViewNameAndAttributes() {
+    void getUpdateContactWithIdShouldReturnCorrectViewNameAndAttributes() {
         int id = 1;
         when(contactService.findContactById(id)).thenReturn(new Contact());
 
@@ -86,7 +86,7 @@ class ContactControllerTest {
     }
 
     @Test
-    void updateContactWithValidIdShouldRedirectToContactDetails() {
+    void updateContactWithIdShouldRedirectToContactDetails() {
         int id = 1;
         Contact contact = new Contact();
         Contact fakeContact = new Contact();

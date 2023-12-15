@@ -8,8 +8,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.ui.Model;
 
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -57,9 +55,9 @@ class AddressControllerTest {
     }
 
     @Test
-    void getAddressWithValidIdShouldReturnCorrectViewNameAndAttributes() {
+    void getAddressWithIdShouldReturnCorrectViewNameAndAttributes() {
         int id = 1;
-        when(addressService.getAddressById(id)).thenReturn(Optional.of(new Address()));
+        when(addressService.findAddressById(id)).thenReturn(new Address());
 
         String viewName = addressController.getAddress(id, model);
 
@@ -68,19 +66,9 @@ class AddressControllerTest {
     }
 
     @Test
-    void getAddressWithInvalidIdShouldReturnNotFoundViewName() {
+    void getUpdateAddressWithIdShouldReturnCorrectViewNameAndAttributes() {
         int id = 1;
-        when(addressService.getAddressById(id)).thenReturn(Optional.empty());
-
-        String viewName = addressController.getAddress(id, model);
-
-        assertEquals("notfound", viewName);
-    }
-
-    @Test
-    void getUpdateAddressWithValidIdShouldReturnCorrectViewNameAndAttributes() {
-        int id = 1;
-        when(addressService.getAddressById(id)).thenReturn(Optional.of(new Address()));
+        when(addressService.findAddressById(id)).thenReturn(new Address());
 
         String viewName = addressController.getUpdateAddress(id, model);
 
@@ -88,15 +76,6 @@ class AddressControllerTest {
         assertEquals("address/edit", viewName);
     }
 
-    @Test
-    void getUpdateAddressWithInvalidIdShouldReturnNotFoundViewName() {
-        int id = 1;
-        when(addressService.getAddressById(id)).thenReturn(Optional.empty());
-
-        String viewName = addressController.getUpdateAddress(id, model);
-
-        assertEquals("notfound", viewName);
-    }
 
     @Test
     void updateAddressWithValidIdShouldRedirectToAddressDetails() {
@@ -104,23 +83,13 @@ class AddressControllerTest {
         Address address = new Address();
         Address fakeAddress = new Address();
         fakeAddress.setId(id);
-        when(addressService.updateAddress(id, address)).thenReturn(Optional.of(fakeAddress));
+        when(addressService.updateAddress(id, address)).thenReturn(fakeAddress);
 
         String redirectURL = addressController.updateAddress(id, address, model);
 
         assertEquals("redirect:/address/1", redirectURL);
     }
 
-    @Test
-    void updateAddressWithInvalidIdShouldReturnNotFoundViewName() {
-        int id = 1;
-        Address address = new Address();
-        when(addressService.updateAddress(id, address)).thenReturn(Optional.empty());
-
-        String viewName = addressController.updateAddress(id, address, model);
-
-        assertEquals("notfound", viewName);
-    }
 
     @Test
     void deleteAddressShouldRedirectToAddressList() {

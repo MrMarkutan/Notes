@@ -1,6 +1,7 @@
 package home.project.notes.service;
 
 import home.project.notes.data.Address;
+import home.project.notes.exception.ResourceNotFoundException;
 import home.project.notes.repos.AddressRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,19 +59,20 @@ class AddressServiceTest {
         Address expectedAddress = new Address();
         when(addressRepository.findById(id)).thenReturn(Optional.of(expectedAddress));
 
-        Optional<Address> actualAddress = addressService.getAddressById(id);
+        Address actualAddress = addressService.findAddressById(id);
 
-        assertEquals(Optional.of(expectedAddress), actualAddress);
+        assertEquals(expectedAddress, actualAddress);
     }
 
     @Test
-    void getAddressByIdWithInvalidIdShouldReturnEmptyOptional() {
+    void getAddressByIdWithInvalidIdShouldThrow() {
         int id = 1;
         when(addressRepository.findById(id)).thenReturn(Optional.empty());
 
-        Optional<Address> actualAddress = addressService.getAddressById(id);
+        assertThrows(ResourceNotFoundException.class, () -> addressService.findAddressById(id));
 
-        assertEquals(Optional.empty(), actualAddress);
+        verify(addressRepository, times(1)).findById(id);
+
     }
 
     @Test
@@ -92,9 +94,9 @@ class AddressServiceTest {
         when(addressRepository.findById(id)).thenReturn(Optional.of(existingAddress));
         when(addressRepository.save(existingAddress)).thenReturn(existingAddress);
 
-        Optional<Address> updatedAddress = addressService.updateAddress(id, newAddress);
+        Address updatedAddress = addressService.updateAddress(id, newAddress);
 
-        assertEquals(Optional.of(existingAddress), updatedAddress);
+        assertEquals(existingAddress, updatedAddress);
     }
 
     @Test
@@ -102,9 +104,9 @@ class AddressServiceTest {
         int id = 1;
         when(addressRepository.findById(id)).thenReturn(Optional.empty());
 
-        Optional<Address> updatedAddress = addressService.updateAddress(id, new Address());
+        assertThrows(ResourceNotFoundException.class, () -> addressService.updateAddress(id, new Address()));
 
-        assertEquals(Optional.empty(), updatedAddress);
+        verify(addressRepository, times(1)).findById(id);
     }
 
     @Test

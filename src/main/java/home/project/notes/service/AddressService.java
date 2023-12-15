@@ -1,12 +1,12 @@
 package home.project.notes.service;
 
 import home.project.notes.data.Address;
+import home.project.notes.exception.ResourceNotFoundException;
 import home.project.notes.repos.AddressRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -41,18 +41,18 @@ public class AddressService {
     }
 
 
-    public Optional<Address> getAddressById(int id) {
-        return addressRepository.findById(id);
+    public Address findAddressById(int id) {
+        return addressRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Address with ID: %d was not found.", id)));
     }
 
     public void deleteAddress(int id) {
-        getAddressById(id).ifPresent(addressRepository::delete);
+        addressRepository.delete(findAddressById(id));
     }
 
-    public Optional<Address> updateAddress(int id, Address address) {
-        return getAddressById(id)
-                .map(existingAddress -> existingAddress.update(address))
-                .map(this::saveAddress);
+    public Address updateAddress(int id, Address address) {
+        Address updated = findAddressById(id).update(address);
+        return saveAddress(updated);
     }
 
 
